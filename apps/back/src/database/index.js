@@ -1,5 +1,7 @@
 const databaseConfig = require('../../knexfile')
 
-const database = require('knex')(databaseConfig.development)
+const { NODE_ENV } = require('../config')
+
+const database = require('knex')(databaseConfig[NODE_ENV])
 
 module.exports = database

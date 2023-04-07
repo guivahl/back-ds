@@ -3,6 +3,8 @@ const cors = require('cors')
 
 const routes = require('./routes')
 
+const { PORT } = require('./config')
+
 const app = express()
 
 app.use(cors())
@@ -11,4 +13,4 @@ app.use(express.json())
 
 app.use(routes)
 
-app.listen(3000, () => console.log(`Server runnning on port: ${3000}!`))
+app.listen(PORT, () => console.log(`Server runnning on port: ${PORT}!`))
