@@ -14,14 +14,24 @@ const planoRespostasEnum = [
 exports.up = (knex) =>
   knex.schema
     .createTable("usuarios", (table) => {
-      table.increments("id").notNullable().primary();
       table.string("nome").notNullable();
-      table.string("email").notNullable();
+      table.string("email").notNullable().primary();
       table.string("senha").notNullable();
     })
     .createTable("alunos", (table) => {
       table.string("numeroMatricula").notNullable().primary();
       table.string("emailUsuario").notNullable().unique();
+      table.foreign("emailUsuario").references("email").inTable("usuarios")
+    })
+    .createTable("professores", (table) => {
+      table.string("numeroServidor").notNullable().primary();
+      table.string("emailUsuario").notNullable().unique();
+      table.foreign("emailUsuario").references("email").inTable("usuarios")
+    })
+    .createTable("coordenadores", (table) => {
+      table.increments("id").unique().primary();
+      table.string("numeroServidor").notNullable().unique();
+      table.foreign("numeroServidor").references("numeroServidor").inTable("professores")
     })
     .createTable("turmas", (table) => {
       table.increments("id").notNullable().primary();
@@ -37,23 +47,20 @@ exports.up = (knex) =>
       table.date("inicioReavaliacao").notNullable();
       table.date("fimReavaliacao").notNullable();
       table.integer("coordenadorId").notNullable();
+      table.foreign("coordenadorId").references("id").inTable("coordenadores")
     })
     .createTable("alunosTurmas", (table) => {
       table.increments("id").primary();
       table.string("numeroMatricula").notNullable();
       table.integer("turmaId").notNullable();
-    })
-    .createTable("professores", (table) => {
-      table.string("numeroServidor").notNullable().primary();
-      table.string("emailUsuario").notNullable().unique();
-    })
-    .createTable("coordenadores", (table) => {
-      table.increments("id").unique().primary();
-      table.string("emailUsuario").notNullable().unique();
+      table.foreign("numeroMatricula").references("numeroMatricula").inTable("alunos")
+      table.foreign("turmaId").references("id").inTable("turmas")
+
     })
     .createTable("admins", (table) => {
       table.increments("id").unique().primary();
       table.string("emailUsuario").notNullable().unique();
+      table.foreign("emailUsuario").references("email").inTable("usuarios")
     })
     .createTable("propostas", (table) => {
       table.increments("id").primary();
@@ -66,6 +73,9 @@ exports.up = (knex) =>
       table.integer("turmaId").notNullable();
       table.string("numeroMatriculaAluno").notNullable();
       table.string("numeroServidorOrientador").notNullable();
+      table.foreign("numeroMatriculaAluno").references("numeroMatricula").inTable("alunos")
+      table.foreign("turmaId").references("id").inTable("turmas")
+      table.foreign("numeroServidorOrientador").references("numeroServidor").inTable("professores")
     })
     .createTable("revisoes", (table) => {
       table.increments("id").notNullable().primary();
@@ -82,6 +92,8 @@ exports.up = (knex) =>
       table.text("pontosFracos").notNullable();
       table.text("detalhamento").notNullable();
       table.string("numeroServidorRevisor").notNullable();
+      table.foreign("numeroServidorRevisor").references("numeroServidor").inTable("professores")
+      table.foreign("propostaId").references("id").inTable("propostas")
     });
 
 exports.down = (knex) =>
@@ -89,9 +101,9 @@ exports.down = (knex) =>
     .dropTableIfExists("revisoes")
     .dropTableIfExists("propostas")
     .dropTableIfExists("admins")
-    .dropTableIfExists("coordenadores")
-    .dropTableIfExists("professores")
     .dropTableIfExists("alunosTurmas")
     .dropTableIfExists("turmas")
+    .dropTableIfExists("coordenadores")
+    .dropTableIfExists("professores")
     .dropTableIfExists("alunos")
     .dropTableIfExists("usuarios");
