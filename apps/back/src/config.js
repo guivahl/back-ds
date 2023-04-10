@@ -14,4 +14,5 @@ module.exports = {
   DATABASE_SCHEMA: process.env.DATABASE_SCHEMA,
   DATABASE_USER: process.env.DATABASE_USER,
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-};
+  SECRET_ENV: process.env.SECRET_ENV,
+}
