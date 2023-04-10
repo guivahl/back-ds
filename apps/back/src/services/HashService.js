@@ -1,19 +1,19 @@
 const bcrypt = require('bcrypt')
+const { BRCRYPT_SALT } = require('../config')
 
 class HashService {
-    #salt = 10;
 
-    static async generateHash(password) {
-        const hashedPassword = await bcrypt.hash(password, salt);
+    static generateHash(password) {
+        const hashedPassword = bcrypt.hashSync(password, BRCRYPT_SALT);
 
         return hashedPassword;
     }
 
-    static async compareHash(password) {
-        const isValid = await bcrypt.compare(password, hash);
+    static compareHash(password, hash) {
+        const isValid = bcrypt.compareSync(password, hash);
 
         return isValid;
     }
 }
 
-module.exports = new HashService()
+module.exports = HashService

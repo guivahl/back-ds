@@ -15,4 +15,5 @@ module.exports = {
   DATABASE_USER: process.env.DATABASE_USER,
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
   SECRET_ENV: process.env.SECRET_ENV,
+  BRCRYPT_SALT: process.env.BRCRYPT_SALT || 10,
 }
