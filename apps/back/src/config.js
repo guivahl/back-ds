@@ -1,11 +1,11 @@
-const dotenv = require('dotenv')
-const path = require('path')
+const dotenv = require('dotenv');
+const path = require('path');
 
-const envPath = path.resolve(__dirname, '../.env')
+const envPath = path.resolve(__dirname, '../.env');
 
 dotenv.config({
-  path: envPath
-})
+  path: envPath,
+});
 
 module.exports = {
   PORT: process.env.PORT,
@@ -14,4 +14,4 @@ module.exports = {
   DATABASE_SCHEMA: process.env.DATABASE_SCHEMA,
   DATABASE_USER: process.env.DATABASE_USER,
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-}
+};
