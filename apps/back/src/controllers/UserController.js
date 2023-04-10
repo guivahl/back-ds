@@ -20,7 +20,7 @@ class UserController {
         .json({ error: "Seu e-mail ou senha estão incorretos" });
     }
 
-    const validPassword = await HashService.compareHash(senha, user.senha);
+    const validPassword = HashService.compareHash(senha, user.senha);
 
     if (!validPassword) {
       return response
@@ -28,9 +28,14 @@ class UserController {
         .json({ error: "Seu e-mail ou senha estão incorretos" });
     }
 
-    const token = generateToken({ email: user.email });
+    const token = await AuthService.generateToken({ email: user.email });
 
-    return response.json({ user });
+    /*
+      TO-DO: 
+        - retornar se é aluno ou professor no login
+    */
+
+    return response.json({ user, token });
   }
 }
 
