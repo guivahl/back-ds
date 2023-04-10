@@ -1,10 +1,10 @@
-const User = require('../models/User')
+const User = require('../models/User');
 
 class UserController {
   async index(request, response) {
-    const users = await User.query()
-    return response.json(users)
+    const users = await User.query();
+    return response.json(users);
   }
 }
 
-module.exports = new UserController
+module.exports = new UserController();

@@ -1,16 +1,16 @@
-const express = require('express')
-const cors = require('cors')
+const express = require('express');
+const cors = require('cors');
 
-const routes = require('./routes')
+const routes = require('./routes');
 
-const { PORT } = require('./config')
+const { PORT } = require('./config');
 
-const app = express()
+const app = express();
 
-app.use(cors())
+app.use(cors());
 
-app.use(express.json())
+app.use(express.json());
 
-app.use(routes)
+app.use(routes);
 
-app.listen(PORT, () => console.log(`Server runnning on port: ${PORT}!`))
+app.listen(PORT, () => console.log(`Server runnning on port: ${PORT}!`));

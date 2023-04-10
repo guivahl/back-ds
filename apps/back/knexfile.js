@@ -1,4 +1,6 @@
-const { DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_SCHEMA } = require('./src/config')
+const {
+  DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_SCHEMA,
+} = require('./src/config');
 
 module.exports = {
   development: {
@@ -6,11 +8,11 @@ module.exports = {
     connection: {
       host: DATABASE_HOST,
       database: DATABASE_SCHEMA,
-      user:     DATABASE_USER,
-      password: DATABASE_PASSWORD
+      user: DATABASE_USER,
+      password: DATABASE_PASSWORD,
     },
     migrations: {
-      directory: './src/database/migrations'
-    }
-  }
-}
+      directory: './src/database/migrations',
+    },
+  },
+};
