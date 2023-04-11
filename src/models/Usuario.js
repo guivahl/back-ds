@@ -5,7 +5,7 @@ const Professor = require('./Professor');
 
 const visibilityPlugin = require('objection-visibility').default;
 
-class User extends visibilityPlugin(Model) {
+class Usuario extends visibilityPlugin(Model) {
   static get tableName() {
     return 'usuarios';
   }
@@ -36,7 +36,7 @@ class User extends visibilityPlugin(Model) {
       },
     },
     professores: {
-      relation: Model.HasManyRelation,
+      relation: Model.HasOneRelation,
       modelClass: Professor,
       join: {
         from: 'usuarios.email',
@@ -46,4 +46,4 @@ class User extends visibilityPlugin(Model) {
   };
 }
 
-module.exports = User;
+module.exports = Usuario;

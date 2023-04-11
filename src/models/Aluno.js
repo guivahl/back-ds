@@ -1,6 +1,6 @@
 const Model = require('./index');
 const Proposta = require('./Proposta');
-const User = require('./User');
+const Usuario = require('./Usuario');
 
 class Aluno extends Model {
   static get tableName() {
@@ -14,7 +14,7 @@ class Aluno extends Model {
   static relationMappings = {
     usuario: {
       relation: Model.BelongsToOneRelation,
-      modelClass: User,
+      modelClass: Usuario,
       join: {
         from: 'alunos.emailUsuario',
         to: 'usuarios.email',

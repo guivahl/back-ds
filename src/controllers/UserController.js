@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/Usuario');
 
 const HashService = require('../services/HashService');
 const AuthService = require('../services/AuthService');
@@ -12,7 +12,8 @@ class UserController {
   async login(request, response) {
     const { email, senha } = request.body;
 
-    const user = await User.query().findOne({ email });
+    const user = await User.query().withGraphJoined("[alunos,professores]").where(`email`,'=',email).first();
+    console.log(user)
 
     if (!user) {
       return response
