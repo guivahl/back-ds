@@ -20,12 +20,12 @@ exports.up = (knex) => knex.schema
   .createTable('alunos', (table) => {
     table.string('emailUsuario').notNullable().unique().primary();
     table.string('numeroMatricula').notNullable().unique();
-    table.foreign('emailUsuario').references('email').inTable('usuarios');
+    table.foreign('emailUsuario').references('email').inTable('usuarios').onDelete('CASCADE');
   })
   .createTable('professores', (table) => {
     table.string('emailUsuario').notNullable().unique().primary();
     table.string('numeroServidor').notNullable().unique();
-    table.foreign('emailUsuario').references('email').inTable('usuarios');
+    table.foreign('emailUsuario').references('email').inTable('usuarios').onDelete('CASCADE');
   })
   .createTable('turmas', (table) => {
     table.increments('id').notNullable().primary();
@@ -41,17 +41,17 @@ exports.up = (knex) => knex.schema
     table.date('inicioReavaliacao').notNullable();
     table.date('fimReavaliacao').notNullable();
     table.string('emailCoordenador').notNullable();
-    table.foreign('emailCoordenador').references('emailUsuario').inTable('professores');
+    table.foreign('emailCoordenador').references('emailUsuario').inTable('professores').onDelete('CASCADE');
   })
   .createTable('alunosTurmas', (table) => {
     table.string('emailAluno').notNullable().primary();
     table.integer('turmaId').notNullable();
-    table.foreign('emailAluno').references('emailUsuario').inTable('alunos');
-    table.foreign('turmaId').references('id').inTable('turmas');
+    table.foreign('emailAluno').references('emailUsuario').inTable('alunos').onDelete('CASCADE');
+    table.foreign('turmaId').references('id').inTable('turmas').onDelete('CASCADE');
   })
   .createTable('admins', (table) => {
     table.string('emailUsuario').notNullable().unique().primary();
-    table.foreign('emailUsuario').references('email').inTable('usuarios');
+    table.foreign('emailUsuario').references('email').inTable('usuarios').onDelete('CASCADE');
   })
   .createTable('propostas', (table) => {
     table.increments('id').primary();
@@ -63,9 +63,9 @@ exports.up = (knex) => knex.schema
     table.integer('turmaId').notNullable();
     table.string('emailAluno').notNullable();
     table.string('emailOrientador').notNullable();
-    table.foreign('emailAluno').references('emailUsuario').inTable('alunos');
-    table.foreign('turmaId').references('id').inTable('turmas');
-    table.foreign('emailOrientador').references('emailUsuario').inTable('professores');
+    table.foreign('emailAluno').references('emailUsuario').inTable('alunos').onDelete('CASCADE');
+    table.foreign('turmaId').references('id').inTable('turmas').onDelete('CASCADE');
+    table.foreign('emailOrientador').references('emailUsuario').inTable('professores').onDelete('CASCADE');
   })
   .createTable('revisoes', (table) => {
     table.increments('id').notNullable().primary();
@@ -82,8 +82,8 @@ exports.up = (knex) => knex.schema
     table.text('pontosFracos').notNullable();
     table.text('detalhamento').notNullable();
     table.string('emailRevisor').notNullable();
-    table.foreign('emailRevisor').references('emailUsuario').inTable('professores');
-    table.foreign('propostaId').references('id').inTable('propostas');
+    table.foreign('emailRevisor').references('emailUsuario').inTable('professores').onDelete('CASCADE');
+    table.foreign('propostaId').references('id').inTable('propostas').onDelete('CASCADE');
   });
 
 exports.down = (knex) => knex.schema

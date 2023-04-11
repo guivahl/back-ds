@@ -1,7 +1,7 @@
-const User = require("../models/User");
+const User = require('../models/User');
 
-const HashService = require("../services/HashService");
-const AuthService = require("../services/AuthService");
+const HashService = require('../services/HashService');
+const AuthService = require('../services/AuthService');
 
 class UserController {
   async index(request, response) {
@@ -17,7 +17,7 @@ class UserController {
     if (!user) {
       return response
         .status(403)
-        .json({ error: "Seu e-mail ou senha estão incorretos" });
+        .json({ error: 'Seu e-mail ou senha estão incorretos' });
     }
 
     const validPassword = HashService.compareHash(senha, user.senha);
@@ -25,13 +25,13 @@ class UserController {
     if (!validPassword) {
       return response
         .status(403)
-        .json({ error: "Seu e-mail ou senha estão incorretos" });
+        .json({ error: 'Seu e-mail ou senha estão incorretos' });
     }
 
     const token = await AuthService.generateToken({ email: user.email });
 
     /*
-      TO-DO: 
+      TO-DO:
         - retornar se é aluno ou professor no login
     */
 
