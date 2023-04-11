@@ -1,59 +1,54 @@
 const Model = require('./index');
-const Usuario = require('./Usuario');
-const Turma = require('./Turma');
-const Revisao = require('./Revisao');
-const Proposta = require('./Proposta');
+const User = require('./User');
+const Class = require('./Class');
+const Review = require('./Review');
+const Proposal = require('./Proposal');
 
 class Professor extends Model {
   static get tableName() {
-    return 'professores';
+    return 'professors';
   }
 
   static get idColumn() {
-    return 'emailUsuario';
+    return 'userEmail';
   }
 
-  static relationMappings = {
-    usuario: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: Usuario,
-      join:
-      {
-        from: 'professores.emailUsusario',
-        to: 'usuarios.email',
+  static get relationMappings() {
+    return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'professors.userEmail',
+          to: 'users.email',
+        },
       },
-    },
-    turmas:
-    {
-      relation: Model.HasManyRelation,
-      modelClass: Turma,
-      join:
-      {
-        from: 'professores.emailUsusario',
-        to: 'turmas.emailCoordenador',
+      classes: {
+        relation: Model.HasManyRelation,
+        modelClass: Class,
+        join: {
+          from: 'professors.userEmail',
+          to: 'classes.coordinatorEmail',
+        },
       },
-    },
-    revisoes:
-    {
-      relation: Model.HasManyRelation,
-      modelClass: Revisao,
-      join:
-      {
-        from: 'professores.emailUsusario',
-        to: 'revisoes.emailRevisor',
+      reviews: {
+        relation: Model.HasManyRelation,
+        modelClass: Review,
+        join: {
+          from: 'professors.userEmail',
+          to: 'reviews.reviewerEmail',
+        },
       },
-    },
-    propostas:
-    {
-      relation: Model.HasManyRelation,
-      modelClass: Proposta,
-      join:
-      {
-        from: 'professores.emailUsusario',
-        to: 'propostas.emailOrientador',
+      proposals: {
+        relation: Model.HasManyRelation,
+        modelClass: Proposal,
+        join: {
+          from: 'professors.userEmail',
+          to: 'proposals.advisorEmail',
+        },
       },
-    },
-  };
+    };
+  }
 }
 
 module.exports = Professor;

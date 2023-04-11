@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const { SECRET_ENV } = require("../config");
+const jwt = require('jsonwebtoken');
+const { SECRET_ENV } = require('../config');
 
 class AuthService {
   static async generateToken(params = {}) {
