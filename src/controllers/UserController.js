@@ -1,4 +1,4 @@
-const User = require('../models/Usuario');
+const User = require('../models/User');
 
 const HashService = require('../services/HashService');
 const AuthService = require('../services/AuthService');
@@ -10,10 +10,9 @@ class UserController {
   }
 
   async login(request, response) {
-    const { email, senha } = request.body;
+    const { email, password } = request.body;
 
-    const user = await User.query().withGraphJoined("[alunos,professores]").where(`email`,'=',email).first();
-    console.log(user)
+    const user = await User.query().withGraphJoined('[student, professor]').where('email', '=', email).first();
 
     if (!user) {
       return response
@@ -21,7 +20,7 @@ class UserController {
         .json({ error: 'Seu e-mail ou senha estão incorretos' });
     }
 
-    const validPassword = HashService.compareHash(senha, user.senha);
+    const validPassword = HashService.compareHash(password, user.password);
 
     if (!validPassword) {
       return response

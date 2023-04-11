@@ -1,9 +1,10 @@
 const Model = require('./index');
+const Proposal = require('./Proposal');
 const User = require('./User');
 
-class Admin extends Model {
+class Student extends Model {
   static get tableName() {
-    return 'admins';
+    return 'students';
   }
 
   static get idColumn() {
@@ -16,12 +17,20 @@ class Admin extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
+          from: 'students.userEmail',
           to: 'users.email',
-          from: 'admins.userEmail',
+        },
+      },
+      proposals: {
+        relation: Model.HasManyRelation,
+        modelClass: Proposal,
+        join: {
+          from: 'students.userEmail',
+          to: 'proposals.studentEmail',
         },
       },
     };
   }
 }
 
-module.exports = Admin;
+module.exports = Student;
