@@ -12,6 +12,7 @@ class Student extends Model {
   static get relationMappings() {
     const Proposal = require('./Proposal');
     const User = require('./User');
+    const Class = require('./Class');
     return {
       user: {
         relation: Model.BelongsToOneRelation,
@@ -27,6 +28,18 @@ class Student extends Model {
         join: {
           from: 'students.userEmail',
           to: 'proposals.studentEmail',
+        },
+      },
+      classes: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Class,
+        join: {
+          from: 'students.userEmail',
+          through: {
+            from: 'studentsClasses.studentEmail',
+            to: 'studentsClasses.classId',
+          },
+          to: 'classes.id',
         },
       },
     };
