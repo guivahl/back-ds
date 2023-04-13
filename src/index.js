@@ -3,6 +3,8 @@ const cors = require('cors');
 
 const routes = require('./routes');
 
+const Authentication = require('./middlewares/Authentication');
+
 const { PORT } = require('./config');
 
 const app = express();
@@ -10,6 +12,8 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+
+app.use(Authentication.initialize());
 
 app.use(routes);
 
