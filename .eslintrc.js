@@ -15,5 +15,6 @@ module.exports = {
     'import/order': 'off',
     'import/no-extraneous-dependencies': 'off',
     'consistent-return': 'off',
+    'global-require': 'off',
   },
 };
