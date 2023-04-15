@@ -2,6 +2,8 @@ const Student = require('../models/Student');
 
 class StudentsController {
   async proposals(request, response) {
+    const { email } = request.auth;
+
     let today = new Date();
     today = today.toISOString();
 
@@ -28,7 +30,7 @@ class StudentsController {
             .where('endDate', '>', today);
         },
       })
-      .where('proposals.studentEmail', 'lwtavares@inf.ufpel.edu.br');
+      .where('proposals.studentEmail', email);
 
     return response.json(proposals);
   }

@@ -31,11 +31,6 @@ class UserController {
 
     const token = await AuthService.generateToken({ email: user.email });
 
-    /*
-      TO-DO:
-        - retornar se é aluno ou professor no login
-    */
-
     return response.json({ user, token });
   }
 }
