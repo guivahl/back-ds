@@ -4,8 +4,7 @@ class StudentsController {
   async proposals(request, response) {
     const { email } = request.auth;
 
-    let today = new Date();
-    today = today.toISOString();
+    const today = new Date().toISOString();
 
     const proposals = await Student
       .query()
