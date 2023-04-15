@@ -44,8 +44,9 @@ exports.up = (knex) => knex.schema
     table.foreign('coordinatorEmail').references('userEmail').inTable('professors').onDelete('CASCADE');
   })
   .createTable('studentsClasses', (table) => {
-    table.string('studentEmail').notNullable().primary();
+    table.string('studentEmail').notNullable();
     table.integer('classId').notNullable();
+    table.primary(['studentEmail', 'classId']);
     table.foreign('studentEmail').references('userEmail').inTable('students').onDelete('CASCADE');
     table.foreign('classId').references('id').inTable('classes').onDelete('CASCADE');
   })
@@ -63,6 +64,7 @@ exports.up = (knex) => knex.schema
     table.integer('classId').notNullable();
     table.string('studentEmail').notNullable();
     table.string('advisorEmail').notNullable();
+    table.timestamps(true, true, true);
     table.foreign('studentEmail').references('userEmail').inTable('students').onDelete('CASCADE');
     table.foreign('classId').references('id').inTable('classes').onDelete('CASCADE');
     table.foreign('advisorEmail').references('userEmail').inTable('professors').onDelete('CASCADE');
