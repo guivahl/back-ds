@@ -2,9 +2,13 @@ const Student = require('../models/Student');
 
 class StudentsController {
   async proposals(request, response) {
+    const { email } = request.auth;
+
+    const today = new Date().toISOString();
+
     const proposals = await Student
       .query()
-      .withGraphJoined('[user(filterUser), classes(filterClass), proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass)]]').modifiers({
+      .withGraphJoined('[user(filterUser), classes(filterActiveClass), proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass)]]').modifiers({
         filterUser: (builder) => {
           builder.select('name');
         },
@@ -19,8 +23,13 @@ class StudentsController {
           builder.select('name', 'startDate')
             .orderBy('startDate', 'desc');
         },
+        filterActiveClass: (builder) => {
+          builder.select('name', 'startDate')
+            .where('startDate', '<', today)
+            .where('endDate', '>', today);
+        },
       })
-      .where('proposals.studentEmail', 'lwtavares@inf.ufpel.edu.br');
+      .where('proposals.studentEmail', email);
 
     return response.json(proposals);
   }
