@@ -4,7 +4,7 @@ exports.seed = async (knex) => {
       id: 1,
       name: 'tcc1 2021/2',
       startDate: '28/01/2021',
-      endDate: '30/04/2021',
+      endDate: '30/04/2023',
       submissionStartDate: '15/02/2021',
       submissionEndDate: '01/03/2021',
       evaluationStartDate: '02/03/2021',
