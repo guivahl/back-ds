@@ -7,26 +7,30 @@ class ProposalController {
       title, advisorEmail, coadvisor, abstract, keywords, filePath = './',
     } = request.body;
 
-    const { email } = request.auth;
+    const { email: studentEmail } = request.auth;
 
     const today = new Date().toISOString();
 
-    const { id: classId } = (await Student.query().withGraphJoined('classes(filterActiveClass)').modifiers({
+    const activeClass = (await Student.query().withGraphJoined('classes(filterActiveClass)').modifiers({
       filterActiveClass: (builder) => {
         builder.select('id', 'name')
           .where('startDate', '<', today)
           .where('endDate', '>', today);
       },
-    }).findById(email)).classes[0];
+    }).findById(studentEmail)).classes[0];
+
+    if (!activeClass) {
+      return response.status(400).json({ error: 'Você não está em uma turma ativa' });
+    }
 
     const proposal = await Proposal.query().insert({
       title,
       coadvisor,
       abstract,
       keywords,
-      studentEmail: email,
+      studentEmail,
       advisorEmail,
-      classId,
+      classId: activeClass.id,
       filePath,
     });
 
