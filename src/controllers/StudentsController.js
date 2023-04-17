@@ -49,7 +49,7 @@ class StudentsController {
         ...review,
         reviewer: review.reviewer.user.name
       }))
-    return response.json({id: proposals.id, title: proposals.title, reviews:proposals.reviews, reviews: reviewFormatted});
+    return response.json({title: proposals.title, reviews: reviewFormatted});
   }
 }
 
