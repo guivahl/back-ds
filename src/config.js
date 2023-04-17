@@ -16,4 +16,7 @@ module.exports = {
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
   SECRET_ENV: process.env.SECRET_ENV,
   BRCRYPT_SALT: process.env.BRCRYPT_SALT || 10,
+  AWS_BUCKET: process.env.AWS_BUCKET,
+  AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
 };
