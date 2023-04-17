@@ -37,11 +37,9 @@ class StudentsController {
     return response.json(proposals);
   }
 
-  async specificProposal(request, response) {
+  async getReviewsByProposal(request, response) {
     const { email } = request.auth;
     const id = request.params.id;
-
-    const today = new Date().toISOString();
 
     const proposals = await Proposal
       .query().findById(id)
