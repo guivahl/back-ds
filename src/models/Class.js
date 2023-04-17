@@ -1,6 +1,7 @@
 const Model = require('./index');
 const Student = require('./Student');
 const Professor = require('./Professor');
+const Proposal = require('./Proposal');
 
 class Class extends Model {
   static get tableName() {
@@ -23,6 +24,14 @@ class Class extends Model {
             to: 'studentsClasses.studentEmail',
           },
           to: 'students.userEmail',
+        },
+      },
+      proposals: {
+        relation: Model.HasManyRelation,
+        modelClass: Proposal,
+        join: {
+          from: 'classes.id',
+          to: 'proposoals.classId',
         },
       },
       coordinator: {
