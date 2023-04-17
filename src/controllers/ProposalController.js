@@ -11,13 +11,15 @@ class ProposalController {
 
     const today = new Date().toISOString();
 
-    const activeClass = (await Student.query().withGraphJoined('classes(filterActiveClass)').modifiers({
+    const currentStudent = await Student.query().withGraphJoined('classes(filterActiveClass)').modifiers({
       filterActiveClass: (builder) => {
         builder.select('id', 'name')
           .where('startDate', '<', today)
           .where('endDate', '>', today);
       },
-    }).findById(studentEmail)).classes[0];
+    }).findById(studentEmail);
+
+    const activeClass = currentStudent.classes?.[0];
 
     if (!activeClass) {
       return response.status(400).json({ error: 'Você não está em uma turma ativa' });
