@@ -1,7 +1,5 @@
 const Student = require('../models/Student');
-const Review = require('../models/Review');
 const Proposal = require('../models/Proposal');
-
 
 class StudentsController {
   async proposals(request, response) {
@@ -38,18 +36,18 @@ class StudentsController {
   }
 
   async getReviewsByProposal(request, response) {
-    const { email } = request.auth;
-    const id = request.params.id;
+    const { id } = request.params;
 
     const proposals = await Proposal
-      .query().findById(id)
-      .withGraphJoined('reviews.[reviewer.user]');
+      .query()
+      .withGraphJoined('reviews.[reviewer.user]')
+      .findById(id);
 
-      const reviewFormatted = proposals.reviews.map(review => ({
-        ...review,
-        reviewer: review.reviewer.user.name
-      }))
-    return response.json({title: proposals.title, reviews: reviewFormatted});
+    const reviewFormatted = proposals.reviews.map((review) => ({
+      ...review,
+      reviewer: review.reviewer.user.name,
+    }));
+    return response.json({ title: proposals.title, reviews: reviewFormatted });
   }
 }
 
