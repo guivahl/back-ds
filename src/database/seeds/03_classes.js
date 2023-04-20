@@ -28,7 +28,7 @@ exports.seed = async (knex) => {
       resubmissionEndDate: '03/04/2022',
       reevaluationStartDate: '04/04/2022',
       reevaluationEndDate: '18/04/2022',
-      coordinatorEmail: 'ldsfreitas@inf.ufpel.edu.br',
+      coordinatorEmail: 'larissa@inf.ufpel.edu.br',
     },
   ];
 
