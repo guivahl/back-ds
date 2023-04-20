@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const Professor = require('../models/Professor');
 const Class = require('../models/Class');
 
 class ProfessorController {
@@ -12,39 +11,33 @@ class ProfessorController {
   async getAllClasses(request, response) {
     const { email } = request.auth;
 
-    const coordinator = await Professor
+    const coordinator = await Class
       .query()
-      .withGraphJoined('[classes as coordinatorClasses]')
-      .findById(email);
+      .innerJoin('professors', 'professors.userEmail', 'classes.coordinatorEmail')
+      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .where('professors.userEmail', email);
 
-    const advisorClasses = await Class
+    const advisor = await Class
       .query()
-      .withGraphJoined('proposals.professor')
-      .where('advisorEmail', email);
+      .innerJoin('proposals', 'proposals.classId', 'classes.id')
+      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .innerJoin('professors', 'professors.userEmail', 'proposals.advisorEmail')
+      .where('professors.userEmail', email)
+      .groupBy('classes.id');
 
-    const reviewerClasses = await Class
+    const reviewer = await Class
       .query()
-      .withGraphJoined('proposals.reviews.reviewer')
-      .where('advisorEmail', email);
-
-    const advisorFormatted = advisorClasses.map((classes) => ({
-      id: classes.id,
-      name: classes.name,
-      startDate: classes.startDate,
-      endDate: classes.endDate,
-    }));
-
-    const reviewerFormatted = reviewerClasses.map((classes) => ({
-      id: classes.id,
-      name: classes.name,
-      startDate: classes.startDate,
-      endDate: classes.endDate,
-    }));
+      .innerJoin('proposals', 'proposals.classId', 'classes.id')
+      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .innerJoin('reviews', 'reviews.proposalId', 'proposals.id')
+      .innerJoin('professors', 'professors.userEmail', 'reviews.reviewerEmail')
+      .where('professors.userEmail', email)
+      .groupBy('classes.id');
 
     return response.json({
-      ...coordinator,
-      advisorClasses: advisorFormatted,
-      reviewerClasses: reviewerFormatted,
+      coordinatorClasses: coordinator,
+      advisorClasses: advisor,
+      reviewerClasses: reviewer,
     });
   }
 }
