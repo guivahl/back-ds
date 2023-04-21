@@ -1,6 +1,4 @@
 const Model = require('./index');
-const Professor = require('./Professor');
-const Proposal = require('./Proposal');
 
 class Review extends Model {
   static get tableName() {
@@ -12,6 +10,9 @@ class Review extends Model {
   }
 
   static get relationMappings() {
+    const Professor = require('./Professor');
+    const Proposal = require('./Proposal');
+
     return {
       reviewer: {
         relation: Model.BelongsToOneRelation,

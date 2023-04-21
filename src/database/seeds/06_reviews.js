@@ -16,7 +16,7 @@ exports.seed = async (knex) => {
       strengths: 'Pellentesque convallis odio eget pharetra euismod. Duis blandit arcu eget ultrices egestas. Nulla ac aliquet libero. Vivamus scelerisque pharetra dui, tempor egestas tortor rhoncus ac. Mauris porttitor consequat ante, quis porttitor nisl vestibulum quis. Duis vel lacus et orci pellentesque dignissim. ',
       weaknesses: 'Nulla ac aliquet libero. Vivamus scelerisque pharetra dui, tempor egestas tortor rhoncus ac. Mauris porttitor consequat ante, quis porttitor nisl vestibulum quis. Duis vel lacus et orci pellentesque dignissim.',
       details: 'Donec in velit vitae dolor fringilla ullamcorper non eget massa. Ut efficitur iaculis diam, vel ornare erat fringilla lobortis.',
-      reviewerEmail: 'ldsfreitas@inf.ufpel.edu.br',
+      reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
 
     {
@@ -35,7 +35,7 @@ exports.seed = async (knex) => {
       strengths: 'Pellentesque convallis odio eget pharetra euismod. Duis blandit arcu eget ultrices egestas. Nulla ac aliquet libero. Vivamus scelerisque pharetra dui, tempor egestas tortor rhoncus ac. Mauris porttitor consequat ante, quis porttitor nisl vestibulum quis. Duis vel lacus et orci pellentesque dignissim. ',
       weaknesses: 'Nulla ac aliquet libero. Vivamus scelerisque pharetra dui, tempor egestas tortor rhoncus ac. Mauris porttitor consequat ante, quis porttitor nisl vestibulum quis. Duis vel lacus et orci pellentesque dignissim.',
       details: 'Donec in velit vitae dolor fringilla ullamcorper non eget massa. Ut efficitur iaculis diam, vel ornare erat fringilla lobortis.',
-      reviewerEmail: 'ldsfreitas@inf.ufpel.edu.br',
+      reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
 
   ];
