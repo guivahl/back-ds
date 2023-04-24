@@ -31,7 +31,7 @@ class Class extends Model {
         modelClass: Proposal,
         join: {
           from: 'classes.id',
-          to: 'proposoals.classId',
+          to: 'proposals.classId',
         },
       },
       coordinator: {

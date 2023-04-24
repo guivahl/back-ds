@@ -6,7 +6,7 @@ exports.seed = async (knex) => {
     { name: 'Marcelo Dias', email: 'marcelo.sdias@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Cristiano Flores dos Santos', email: 'cfdsantos@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Leandro Weber Tavares', email: 'lwtavares@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
-    { name: 'Larissa Freitas', email: 'ldsfreitas@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
+    { name: 'Larissa Freitas', email: 'larissa@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Administrador', email: 'adm@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Alessandra Rosa Galvão', email: 'argalvao@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Murillo Aleixo Mota', email: 'mamota@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
