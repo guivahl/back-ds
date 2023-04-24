@@ -21,7 +21,7 @@ class ProfessorController {
       .where('reviews.reviewerEmail', '=', email)
       .select('proposals.id', 'proposals.title', 'proposals.createdAt');
 
-    response.json(proposals);
+    return response.json(proposals);
   }
 
   async getAllClasses(request, response) {
