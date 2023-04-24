@@ -78,7 +78,7 @@ exports.up = (knex) => knex.schema
     table.enu('methodology', answersEnum).notNullable();
     table.boolean('wasAdequate').notNullable();
     table.enu('workPlan', answersPlanEnum).notNullable();
-    table.boolean('wasApproved').notNullable();
+    table.boolean('wasApproved');
     table.text('summary').notNullable();
     table.text('strengths').notNullable();
     table.text('weaknesses').notNullable();
