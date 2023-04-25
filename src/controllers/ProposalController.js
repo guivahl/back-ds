@@ -1,13 +1,19 @@
 const Student = require('../models/Student');
 const Proposal = require('../models/Proposal');
 
+const fs = require('fs');
+
+const FileService = require('../services/FileService');
+
 class ProposalController {
   async create(request, response) {
     const {
-      title, advisorEmail, coadvisor, abstract, keywords, filePath = './',
+      title, advisorEmail, coadvisor, abstract, keywords,
     } = request.body;
 
     const { email: studentEmail } = request.auth;
+
+    const { path: uploadedFilePath } = request.file;
 
     const today = new Date().toISOString();
 
@@ -24,6 +30,10 @@ class ProposalController {
     if (!activeClass) {
       return response.status(400).json({ error: 'Você não está em uma turma ativa' });
     }
+
+    const filePath = await FileService.save(uploadedFilePath, studentEmail);
+
+    fs.unlinkSync(uploadedFilePath);
 
     const proposal = await Proposal.query().insert({
       title,

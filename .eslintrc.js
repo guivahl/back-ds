@@ -16,5 +16,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'consistent-return': 'off',
     'global-require': 'off',
+    'import/no-unresolved': 'off',
+    'no-async-promise-executor': 'off',
   },
 };
