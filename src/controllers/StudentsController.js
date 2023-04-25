@@ -1,6 +1,15 @@
 const Student = require('../models/Student');
 const Proposal = require('../models/Proposal');
 
+const proposalStatus = (proposal) => {
+  if (proposal.reviews.length <= 0) return 'Pendente';
+
+  if (proposal.reviews.some((element) => element.wasApproved === false)) return 'Reprovado';
+  if (proposal.reviews.every((element) => element.wasApproved === true)) return 'Aprovado';
+
+  return 'Pendente';
+};
+
 class StudentsController {
   async proposals(request, response) {
     const { email } = request.auth;
@@ -36,15 +45,7 @@ class StudentsController {
       .where('proposals.studentEmail', email);
 
     const proposalsStatus = proposals[0].proposals.map((proposal) => {
-      let status = 'Pendente';
-      if (proposal.reviews.length !== 0) {
-        if (proposal.reviews.some((element) => element.wasApproved === false)) {
-          status = 'Reprovado';
-        } else if (proposal.reviews.every((element) => element.wasApproved === true)) {
-          status = 'Aprovado';
-        }
-      }
-
+      const status = proposalStatus(proposal);
       return {
         id: proposal.id,
         title: proposal.title,
