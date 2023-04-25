@@ -61,6 +61,7 @@ class StudentsController {
     return response.json({
       userEmail: proposals[0].userEmail,
       userName: proposals[0].user.name,
+      activeClass: proposals[0].activeClass,
       proposals: proposalsStatus,
     });
   }
