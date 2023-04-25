@@ -9,7 +9,7 @@ class StudentsController {
 
     const proposals = await Student
       .query()
-      .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass)]]').modifiers({
+      .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass),reviews(filterReviews)]]').modifiers({
         filterUser: (builder) => {
           builder.select('name');
         },
@@ -29,10 +29,39 @@ class StudentsController {
             .where('startDate', '<', today)
             .where('endDate', '>', today);
         },
+        filterReviews: (builder) => {
+          builder.select('id', 'wasApproved');
+        },
       })
       .where('proposals.studentEmail', email);
 
-    return response.json(proposals);
+    const proposalsStatus = proposals[0].proposals.map((proposal) => {
+      let status = 'Pendente';
+      if (proposal.reviews.length !== 0) {
+        if (proposal.reviews.some((element) => element.wasApproved === false)) {
+          status = 'Reprovado';
+        } else if (proposal.reviews.every((element) => element.wasApproved === true)) {
+          status = 'Aprovado';
+        }
+      }
+
+      return {
+        id: proposal.id,
+        title: proposal.title,
+        coadvisor: proposal.coadvisor,
+        classId: proposal.classId,
+        createdAt: proposal.createdAt,
+        professor: proposal.professor,
+        class: proposal.class,
+        status,
+      };
+    });
+
+    return response.json({
+      userEmail: proposals[0].userEmail,
+      userName: proposals[0].user.name,
+      proposals: proposalsStatus,
+    });
   }
 
   async getReviewsByProposal(request, response) {
