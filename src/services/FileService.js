@@ -1,11 +1,11 @@
-const fs = require("fs");
-const path = require("path");
-const AWS = require("aws-sdk");
+const fs = require('fs');
+const path = require('path');
+const AWS = require('aws-sdk');
 const {
   AWS_BUCKET,
   AWS_ACCESS_KEY,
   AWS_SECRET_ACCESS_KEY,
-} = require("../config");
+} = require('../config');
 
 class FileService {
   constructor() {
@@ -17,7 +17,7 @@ class FileService {
 
   async save(
     filePath,
-    userEmail
+    userEmail,
   ) {
     const fileData = fs.readFileSync(filePath);
     const fileExtension = path.extname(filePath);
@@ -30,15 +30,14 @@ class FileService {
       Key: key,
       Body: fileData,
     };
-    
-    return new Promise(async (resolve, reject) => { 
-      this.s3.upload(s3Params, (err, data) => {
-        if (err) reject(err)
-  
-        resolve(data.Location)
-      });
-    })
 
+    return new Promise(async (resolve, reject) => {
+      this.s3.upload(s3Params, (err, data) => {
+        if (err) reject(err);
+
+        resolve(data.Location);
+      });
+    });
   }
 }
 
