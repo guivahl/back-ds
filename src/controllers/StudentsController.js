@@ -71,14 +71,10 @@ class StudentsController {
 
     const proposals = await Proposal
       .query()
-      .withGraphJoined('reviews.[reviewer.user]')
+      .withGraphJoined('reviews(getReviewerName)')
       .findById(id);
 
-    const reviewFormatted = proposals.reviews.map((review) => ({
-      ...review,
-      reviewer: review.reviewer.user.name,
-    }));
-    return response.json({ title: proposals.title, reviews: reviewFormatted });
+    return response.json(proposals);
   }
 }
 
