@@ -16,7 +16,7 @@ class StudentsController {
 
     const today = new Date().toISOString();
 
-    let proposals = await Student
+    const [studentData] = await Student
       .query()
       .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass), reviews(filterReviews)]]').modifiers({
         filterUser: (builder) => {
@@ -42,36 +42,10 @@ class StudentsController {
           builder.select('id', 'wasApproved');
         },
       })
-      .where('proposals.studentEmail', email);
+      .where('students.userEmail', email);
 
-    // Se aluno não possui propostas faz uma query retornando só os dados dele e da turma
-    if (proposals.length === 0) {
-      proposals = await Student
-        .query()
-        .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass]').modifiers({
-          filterUser: (builder) => {
-            builder.select('name');
-          },
-          filterActiveClass: (builder) => {
-            builder.select('name', 'startDate')
-              .where('startDate', '<', today)
-              .where('endDate', '>', today);
-          },
-        })
-        .where('user.email', email);
-
-      return response.json({
-        userEmail: proposals[0].userEmail,
-        userName: proposals[0].user.name,
-        activeClass: proposals[0].activeClass,
-        proposals: [],
-      });
-    }
-    // Se o aluno possui propostas, verifica se essa proposta possui revisões criadas
-    // no banco antes de chamar a função pra calcular o satus
-    const proposalsStatus = proposals[0].proposals.map((proposal) => {
-      let status = 'Pendente';
-      if (proposal.reviews.length === 0) { status = proposalStatus(proposal); }
+    const proposals = studentData.proposals.map((proposal) => {
+      const status = proposal.reviews.length <= 0 ? 'Pendente' : proposalStatus(proposal);
       return {
         id: proposal.id,
         title: proposal.title,
@@ -85,10 +59,10 @@ class StudentsController {
     });
 
     return response.json({
-      userEmail: proposals[0].userEmail,
-      userName: proposals[0].user.name,
-      activeClass: proposals[0].activeClass,
-      proposals: proposalsStatus,
+      userEmail: studentData.userEmail,
+      userName: studentData.user.name,
+      activeClass: studentData.activeClass,
+      proposals,
     });
   }
 
