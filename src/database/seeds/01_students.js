@@ -6,6 +6,7 @@ exports.seed = async (knex) => {
     { userEmail: 'argalvao@inf.ufpel.edu.br', registrationNumber: '19100359' },
     { userEmail: 'mamota@inf.ufpel.edu.br', registrationNumber: '19101316' },
     { userEmail: 'ldsguths@inf.ufpel.edu.br', registrationNumber: '19100392' },
+    { userEmail: 'aaa@inf.ufpel.edu.br', registrationNumber: '99999999' },
 
   ];
 

@@ -16,9 +16,9 @@ class StudentsController {
 
     const today = new Date().toISOString();
 
-    const proposals = await Student
+    let proposals = await Student
       .query()
-      .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass),reviews(filterReviews)]]').modifiers({
+      .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass), reviews(filterReviews)]]').modifiers({
         filterUser: (builder) => {
           builder.select('name');
         },
@@ -43,6 +43,35 @@ class StudentsController {
         },
       })
       .where('proposals.studentEmail', email);
+    if (proposals.length === 0) {
+      proposals = await Student
+        .query()
+        .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass]').modifiers({
+          filterUser: (builder) => {
+            builder.select('name');
+          },
+          filterProfessor: (builder) => {
+            builder.select('userEmail');
+          },
+          filterClass: (builder) => {
+            builder.select('name', 'startDate')
+              .orderBy('startDate', 'desc');
+          },
+          filterActiveClass: (builder) => {
+            builder.select('name', 'startDate')
+              .where('startDate', '<', today)
+              .where('endDate', '>', today);
+          },
+        })
+        .where('user.email', email);
+
+      return response.json({
+        userEmail: proposals[0].userEmail,
+        userName: proposals[0].user.name,
+        activeClass: proposals[0].activeClass,
+        proposals: [],
+      });
+    }
 
     const proposalsStatus = proposals[0].proposals.map((proposal) => {
       const status = proposalStatus(proposal);
