@@ -16,9 +16,9 @@ class StudentsController {
 
     const today = new Date().toISOString();
 
-    const proposals = await Student
+    const [studentData] = await Student
       .query()
-      .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass),reviews(filterReviews)]]').modifiers({
+      .withGraphJoined('[user(filterUser), classes(filterActiveClass) as activeClass, proposals(filterProposals).[professor(filterProfessor).user(filterUser), class(filterClass), reviews(filterReviews)]]').modifiers({
         filterUser: (builder) => {
           builder.select('name');
         },
@@ -42,10 +42,10 @@ class StudentsController {
           builder.select('id', 'wasApproved');
         },
       })
-      .where('proposals.studentEmail', email);
+      .where('students.userEmail', email);
 
-    const proposalsStatus = proposals[0].proposals.map((proposal) => {
-      const status = proposalStatus(proposal);
+    const proposals = studentData.proposals.map((proposal) => {
+      const status = proposal.reviews.length <= 0 ? 'Pendente' : proposalStatus(proposal);
       return {
         id: proposal.id,
         title: proposal.title,
@@ -59,10 +59,10 @@ class StudentsController {
     });
 
     return response.json({
-      userEmail: proposals[0].userEmail,
-      userName: proposals[0].user.name,
-      activeClass: proposals[0].activeClass,
-      proposals: proposalsStatus,
+      userEmail: studentData.userEmail,
+      userName: studentData.user.name,
+      activeClass: studentData.activeClass,
+      proposals,
     });
   }
 
