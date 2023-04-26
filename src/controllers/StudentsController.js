@@ -43,6 +43,8 @@ class StudentsController {
         },
       })
       .where('proposals.studentEmail', email);
+
+    // Se aluno não possui propostas faz uma query retornando só os dados dele e da turma
     if (proposals.length === 0) {
       proposals = await Student
         .query()
@@ -65,9 +67,11 @@ class StudentsController {
         proposals: [],
       });
     }
-
+    // Se o aluno possui propostas, verifica se essa proposta possui revisões criadas
+    // no banco antes de chamar a função pra calcular o satus
     const proposalsStatus = proposals[0].proposals.map((proposal) => {
-      const status = proposalStatus(proposal);
+      let status = 'Pendente';
+      if (proposal.reviews.length === 0) { status = proposalStatus(proposal); }
       return {
         id: proposal.id,
         title: proposal.title,
