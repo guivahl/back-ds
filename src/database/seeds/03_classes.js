@@ -33,8 +33,6 @@ exports.seed = async (knex) => {
     {
       id: 3,
       name: 'tcc1 2022/2',
-      // startDate: new Date('30/01/2023').toISOString(),
-      // endDate: new Date('13/05/2023').toISOString(),
       startDate: '30/01/2023',
       endDate: '13/05/2023',
       submissionStartDate: '12/03/2023',
