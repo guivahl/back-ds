@@ -50,13 +50,6 @@ class StudentsController {
           filterUser: (builder) => {
             builder.select('name');
           },
-          filterProfessor: (builder) => {
-            builder.select('userEmail');
-          },
-          filterClass: (builder) => {
-            builder.select('name', 'startDate')
-              .orderBy('startDate', 'desc');
-          },
           filterActiveClass: (builder) => {
             builder.select('name', 'startDate')
               .where('startDate', '<', today)
