@@ -9,6 +9,16 @@ class Review extends Model {
     return 'id';
   }
 
+  static get modifiers() {
+    return {
+      getReviewerName(builder) {
+        builder.select('reviews.*', 'users.name as reviewerName')
+          .innerJoin('professors', 'reviews.reviewerEmail', 'professors.userEmail')
+          .innerJoin('users', 'users.email', 'professors.userEmail');
+      },
+    };
+  }
+
   static get relationMappings() {
     const Professor = require('./Professor');
     const Proposal = require('./Proposal');
