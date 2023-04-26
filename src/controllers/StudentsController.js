@@ -26,7 +26,7 @@ class StudentsController {
           builder.select('userEmail');
         },
         filterProposals: (builder) => {
-          builder.select('id', 'title', 'coadvisor', 'classId', 'createdAt')
+          builder.select('id', 'title', 'coadvisor', 'classId', 'createdAt', 'filePath')
             .orderBy('createdAt', 'desc');
         },
         filterClass: (builder) => {
@@ -50,6 +50,7 @@ class StudentsController {
         id: proposal.id,
         title: proposal.title,
         coadvisor: proposal.coadvisor,
+        link: proposal.filePath,
         classId: proposal.classId,
         createdAt: proposal.createdAt,
         professor: proposal.professor,
