@@ -1,7 +1,6 @@
 exports.seed = async (knex) => {
   const reviews = [
     {
-      id: 1,
       proposalId: 1,
       reviewedOn: '05/03/2021',
       presentation: '2 - Regular',
@@ -20,7 +19,6 @@ exports.seed = async (knex) => {
     },
 
     {
-      id: 2,
       proposalId: 1,
       reviewedOn: '06/04/2021',
       presentation: '4 - Excelente',
@@ -39,7 +37,6 @@ exports.seed = async (knex) => {
     },
 
     {
-      id: 3,
       proposalId: 2,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -57,7 +54,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
     {
-      id: 4,
       proposalId: 2,
       reviewedOn: '25/03/2023',
       presentation: '4 - Excelente',
@@ -75,7 +71,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
     {
-      id: 5,
       proposalId: 3,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -93,7 +88,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
     {
-      id: 6,
       proposalId: 3,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -111,7 +105,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
     {
-      id: 7,
       proposalId: 4,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -129,7 +122,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'ulisses@inf.ufpel.edu.br',
     },
     {
-      id: 8,
       proposalId: 4,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -147,7 +139,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'rafael.torchelsen@inf.ufpel.edu.br',
     },
     {
-      id: 9,
       proposalId: 5,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -165,7 +156,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'rafael.torchelsen@inf.ufpel.edu.br',
     },
     {
-      id: 10,
       proposalId: 5,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -183,7 +173,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'ulisses@inf.ufpel.edu.br',
     },
     {
-      id: 11,
       proposalId: 6,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -201,7 +190,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'larissa@inf.ufpel.edu.br',
     },
     {
-      id: 12,
       proposalId: 6,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -219,7 +207,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'ulisses@inf.ufpel.edu.br',
     },
     {
-      id: 13,
       proposalId: 7,
       reviewedOn: '23/03/2023',
       presentation: '4 - Excelente',
@@ -237,7 +224,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'adubois@inf.ufpel.edu.br',
     },
     {
-      id: 14,
       proposalId: 7,
       reviewedOn: '24/03/2023',
       presentation: '4 - Excelente',
@@ -255,7 +241,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'cfdsantos@inf.ufpel.edu.br',
     },
     {
-      id: 15,
       proposalId: 8,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',
@@ -273,7 +258,6 @@ exports.seed = async (knex) => {
       reviewerEmail: 'marilton@inf.ufpel.edu.br',
     },
     {
-      id: 16,
       proposalId: 8,
       reviewedOn: '22/03/2023',
       presentation: '4 - Excelente',

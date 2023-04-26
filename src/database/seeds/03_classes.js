@@ -1,7 +1,6 @@
 exports.seed = async (knex) => {
   const classes = [
     {
-      id: 1,
       name: 'tcc1 2021/1',
       startDate: '28/01/2021',
       endDate: '30/04/2021',
@@ -16,7 +15,6 @@ exports.seed = async (knex) => {
       coordinatorEmail: 'cfdsantos@inf.ufpel.edu.br',
     },
     {
-      id: 2,
       name: 'tcc1 2021/2',
       startDate: '28/01/2022',
       endDate: '30/04/2022',
@@ -31,7 +29,6 @@ exports.seed = async (knex) => {
       coordinatorEmail: 'larissa@inf.ufpel.edu.br',
     },
     {
-      id: 3,
       name: 'tcc1 2022/2',
       startDate: '30/01/2023',
       endDate: '13/05/2023',
@@ -44,8 +41,8 @@ exports.seed = async (knex) => {
       reevaluationStartDate: '03/04/2023',
       reevaluationEndDate: '10/04/2023',
       coordinatorEmail: 'larissa@inf.ufpel.edu.br',
-    }, {
-      id: 4,
+    },
+    {
       name: 'tcc1 2023/1',
       startDate: '12/06/2023',
       endDate: '30/12/2023',

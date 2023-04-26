@@ -1,7 +1,6 @@
 exports.seed = async (knex) => {
   const proposals = [
     {
-      id: 1,
       title: 'Decisão de modo de codificação de nuvens de pontos segundo o padrão G-PCC utilizando aprendizado de máquina',
       coadvisor: 'Guilherme Corrêa',
       filePath: 'https://vahl-ds-dev.s3.sa-east-1.amazonaws.com/proposals/lwtavares%40inf.ufpel.edu.br_1682534450616.pdf',
@@ -13,7 +12,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'cfdsantos@inf.ufpel.edu.br',
     },
     {
-      id: 2,
       title: 'Decisão de modo de codificação de nuvens de pontos segundo o padrão G-PCC utilizando aprendizado de máquina',
       coadvisor: 'Guilherme Corrêa',
       filePath: 'https://vahl-ds-dev.s3.sa-east-1.amazonaws.com/proposals/lwtavares%40inf.ufpel.edu.br_1682534450616.pdf',
@@ -25,7 +23,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'cfdsantos@inf.ufpel.edu.br',
     },
     {
-      id: 3,
       title: 'Decisão de modo de codificação de nuvens de pontos segundo o padrão G-PCC utilizando aprendizado de máquina',
       coadvisor: 'Guilherme Corrêa',
       filePath: 'https://vahl-ds-dev.s3.sa-east-1.amazonaws.com/proposals/lwtavares%40inf.ufpel.edu.br_1682534450616.pdf',
@@ -37,7 +34,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'cfdsantos@inf.ufpel.edu.br',
     },
     {
-      id: 4,
       title: 'Alguma coisa a ver com processamento paralelo eu acho',
       coadvisor: 'Coorientador do val',
       filePath: '/home/sim',
@@ -49,7 +45,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'adubois@inf.ufpel.edu.br',
     },
     {
-      id: 5,
       title: 'Uma ferramenta semi-supervisionada para anotação automática de Lesões de fundo causadas por Retinopatia Diabética',
       coadvisor: 'Carlos Alexandre Silva dos Santos',
       filePath: 'https://vahl-ds-dev.s3.sa-east-1.amazonaws.com/proposals/marcelo.sdias%40inf.ufpel.edu.br_1682534542770.pdf',
@@ -61,7 +56,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'marilton@inf.ufpel.edu.br',
     },
     {
-      id: 6,
       title: 'Linguagem natural ou alguma coisa tipo computação teórica',
       coadvisor: 'Coorientador(a) da Ale',
       filePath: '/home/sim',
@@ -73,7 +67,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'reiser@inf.ufpel.edu.br',
     },
     {
-      id: 7,
       title: 'Criação de dataset para treinamento de rede neural com foco em melhoria de qualidade visual de vídeos comprimidos',
       coadvisor: 'Gilberto Kreisler Franco Neto',
       filePath: 'https://vahl-ds-dev.s3.amazonaws.com/proposals/mamota%40inf.ufpel.edu.br_1682534259773.pdf',
@@ -85,7 +78,6 @@ exports.seed = async (knex) => {
       advisorEmail: 'gcorrea@inf.ufpel.edu.br',
     },
     {
-      id: 8,
       title: 'Uma aplicação em realidade virtual como recurso pedagógico para o aprendizado e treinamento de manuscrito de crianças',
       coadvisor: '',
       filePath: 'https://vahl-ds-dev.s3.sa-east-1.amazonaws.com/proposals/ldsguths%40inf.ufpel.edu.br_1682534343193.pdf',
