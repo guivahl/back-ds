@@ -23,7 +23,7 @@ class FileService {
     const fileExtension = path.extname(filePath);
 
     const timestamp = Date.now();
-    const key = `proposals/${userEmail}_${timestamp}${fileExtension}`;
+    const key = `proposals/${userEmail}_${timestamp}${fileExtension}.pdf`;
 
     const s3Params = {
       Bucket: AWS_BUCKET,
