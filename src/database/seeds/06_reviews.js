@@ -276,6 +276,7 @@ exports.seed = async (knex) => {
     },
 
   ];
+  await knex.raw('ALTER SEQUENCE reviews_id_seq RESTART WITH 1');
 
   await knex('reviews').del();
 

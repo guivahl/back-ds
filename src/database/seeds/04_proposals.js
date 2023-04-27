@@ -90,6 +90,7 @@ exports.seed = async (knex) => {
     },
 
   ];
+  await knex.raw('ALTER SEQUENCE proposals_id_seq RESTART WITH 1');
 
   await knex('proposals').del();
 
