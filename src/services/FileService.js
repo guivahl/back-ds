@@ -31,7 +31,7 @@ class FileService {
     const contentType = mime.lookup(fileExtension);
 
     const timestamp = Date.now();
-    const key = `proposals/${userEmail}_${timestamp}${fileExtension}.pdf`;
+    const key = `proposals/${userEmail}_${timestamp}${fileExtension}`;
 
     const s3Params = {
       Bucket: AWS_BUCKET,
