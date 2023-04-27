@@ -27,7 +27,7 @@ class StudentsController {
         },
         filterProposals: (builder) => {
           builder.select('id', 'title', 'coadvisor', 'classId', 'createdAt', 'filePath')
-            .orderBy('createdAt', 'desc');
+            .orderBy('createdAt');
         },
         filterClass: (builder) => {
           builder.select('name', 'startDate')
