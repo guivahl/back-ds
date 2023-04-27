@@ -5,7 +5,8 @@ const Class = require('../models/Class');
 class ProfessorController {
   async index(request, response) {
     const professors = await User.query().innerJoin('professors', 'professors.userEmail', 'users.email')
-      .select('users.*', 'professors.employeeNumber');
+      .select('users.*', 'professors.employeeNumber')
+      .orderBy('name');
     return response.json(professors);
   }
 
