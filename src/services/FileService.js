@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const AWS = require('aws-sdk');
+const mime = require('mime-types')
 const {
   AWS_BUCKET,
   AWS_ACCESS_KEY,
@@ -27,6 +28,7 @@ class FileService {
   ) {
     const fileData = fs.readFileSync(filePath);
     const fileExtension = path.extname(filePath);
+    const contentType = mime.lookup(fileExtension);
 
     const timestamp = Date.now();
     const key = `proposals/${userEmail}_${timestamp}${fileExtension}.pdf`;
@@ -35,6 +37,7 @@ class FileService {
       Bucket: AWS_BUCKET,
       Key: key,
       Body: fileData,
+      ContentType: contentType
     };
 
     return new Promise(async (resolve, reject) => {
