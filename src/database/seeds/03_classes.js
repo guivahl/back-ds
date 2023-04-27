@@ -57,6 +57,7 @@ exports.seed = async (knex) => {
       coordinatorEmail: 'larissa@inf.ufpel.edu.br',
     },
   ];
+  await knex.raw('ALTER SEQUENCE classes_id_seq RESTART WITH 1');
 
   await knex('classes').del();
 
