@@ -8,58 +8,89 @@ class ProposalMiddleware {
 
     const today = new Date().toISOString();
 
-    const currentStudent = await Student.query().withGraphJoined('classes(filterActiveClass)').modifiers({
-      filterActiveClass: (builder) => {
-        builder.select('startDate', 'endDate', 'submissionStartDate', 'submissionEndDate', 'resubmissionStartDate', 'resubmissionEndDate', 'id')
-          .where('startDate', '<', today)
-          .where('endDate', '>', today);
-      },
-    }).findById(studentEmail);
+    const currentStudent = await Student.query()
+      .withGraphJoined('classes(filterActiveClass)')
+      .modifiers({
+        filterActiveClass: (builder) => {
+          builder
+            .select(
+              'startDate',
+              'endDate',
+              'submissionStartDate',
+              'submissionEndDate',
+              'resubmissionStartDate',
+              'resubmissionEndDate',
+              'id',
+            )
+            .where('startDate', '<', today)
+            .where('endDate', '>', today);
+        },
+      })
+      .findById(studentEmail);
 
     const activeClass = currentStudent.classes?.[0];
 
     if (!activeClass) {
-      return response.status(400).json({ error: 'Você não está em uma turma ativa' });
+      return response
+        .status(400)
+        .json({ error: 'Você não está em uma turma ativa' });
     }
-    const subStartDate = new Date(activeClass.submissionStartDate).toISOString();
-    const subEndDate = new Date(activeClass.submissionEndDate).toISOString();
+    const currentProposals = await Proposal.query()
+      .where('proposals.classId', activeClass.id)
+      .where('proposals.studentEmail', studentEmail);
 
-    if (today > subStartDate && today < subEndDate) {
-      const currentProposals = await Proposal.query()
-        .where('proposals.classId', activeClass.id)
-        .where('proposals.studentEmail', studentEmail);
+    if (currentProposals.length === 0) {
+      const subStartDate = new Date(
+        activeClass.submissionStartDate,
+      ).toISOString();
+      const subEndDate = new Date(activeClass.submissionEndDate).toISOString();
 
-      if (currentProposals.length !== 0) {
-        return response.status(400).json({ error: 'Você já enviou uma proposta.' });
-        // return response.json({ status: 'ta no periodo mas tem propostas, não pode enviar' });
+      if (!(today > subStartDate && today < subEndDate)) {
+        return response
+          .status(400)
+          .json({ error: 'Periodo de submissão expirou' });
       }
-      next();
-      // return response.json({ status: 'ta no periodo e não tem proposta, pode enviar' });
     }
+    // console.log(currentProposals);
+    if (currentProposals.length === 1) {
+      const resubStartDate = new Date(
+        activeClass.resubmissionStartDate,
+      ).toISOString();
+      const resubEndDate = new Date(
+        activeClass.resubmissionEndDate,
+      ).toISOString();
 
-    const resubStartDate = new Date(activeClass.resubmissionStartDate).toISOString();
-    const resubEndDate = new Date(activeClass.resubmissionEndDate).toISOString();
+      const reviews = await Review.query().where(
+        'reviews.proposalId',
+        currentProposals[0].id,
+      );
+      // console.log(reviews);
 
-    if (today > resubStartDate && today < resubEndDate) {
-      const currentProposals = await Proposal.query()
-        .where('proposals.classId', activeClass.id)
-        .where('proposals.studentEmail', studentEmail);
+      const wasProposalApproved = reviews.length > 0 && reviews.every((review) => review.wasApproved);
 
-      if (currentProposals.length === 1) {
-        const reviews = await Review.query()
-          .where('reviews.proposalId', currentProposals[0].id);
-        if (reviews.some((review) => review.wasApproved === false)) {
-          next();
-          // return response.json({ status: 'ta no periodo e tem proposta reprovada,pode enviar' });
-        }
-        return response.status(400).json({ error: 'Sua proposta já foi aprovada.' });
-        // return response.json({ status: 'ta no periodo e só tem uma proposta aprovada, nao pode enviar' });
+      // console.log(wasProposalApproved);
+      if (wasProposalApproved) {
+        return response
+          .status(400)
+          .json({ error: 'Sua proposta já foi aprovado' });
       }
-      return response.status(400).json({ error: 'Você não enviou sua proposta para a primeira avaliação, portanto, não pode enviar para a reavaliação.' });
-      // return response.json({ status: 'periodo de resub, mas nao mandou a primeira, nao pode enviar' });
+
+      if (!(today > resubStartDate && today < resubEndDate)) {
+        return response
+          .status(400)
+          .json({ error: 'Periodo de resubmissao expirou' });
+      }
     }
-    return response.status(400).json({ error: 'Fora do período de envio de propostas.' });
-    // return response.json({ status: 'ta fora do periodo de envio' });
+
+    if (currentProposals.length === 2) {
+      return response
+        .status(400)
+        .json({
+          error:
+              'Limite de propostas atingido.',
+        });
+    }
+    next();
   }
 }
 
