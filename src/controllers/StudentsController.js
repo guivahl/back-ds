@@ -2,10 +2,10 @@ const Student = require('../models/Student');
 const Proposal = require('../models/Proposal');
 
 const proposalStatus = (proposal) => {
-  const dia = new Date().toISOString();
-  const end = new Date(proposal.class.endDate).toISOString();
+  const today = new Date().toISOString();
+  const endDate = new Date(proposal.class.endDate).toISOString();
 
-  if (end < dia) return 'Finalizado';
+  if (endDate < today) return 'Finalizado';
   if (proposal.reviews.length <= 0) return 'Pendente';
 
   if (proposal.reviews.some((element) => element.wasApproved === false)) return 'Reprovado';
