@@ -2,6 +2,10 @@ const Student = require('../models/Student');
 const Proposal = require('../models/Proposal');
 
 const proposalStatus = (proposal) => {
+  const today = new Date().toISOString();
+  const endDate = new Date(proposal.class.endDate).toISOString();
+
+  if (endDate < today) return 'Finalizado';
   if (proposal.reviews.length <= 0) return 'Pendente';
 
   if (proposal.reviews.some((element) => element.wasApproved === false)) return 'Reprovado';
@@ -30,7 +34,7 @@ class StudentsController {
             .orderBy('createdAt');
         },
         filterClass: (builder) => {
-          builder.select('name', 'startDate')
+          builder.select('name', 'startDate', 'endDate')
             .orderBy('startDate', 'desc');
         },
         filterActiveClass: (builder) => {
@@ -43,7 +47,6 @@ class StudentsController {
         },
       })
       .where('students.userEmail', email);
-
     const proposals = studentData.proposals.map((proposal) => {
       const status = proposal.reviews.length <= 0 ? 'Pendente' : proposalStatus(proposal);
       return {
