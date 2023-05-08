@@ -19,7 +19,7 @@ class ProposalController {
 
     const currentStudent = await Student.query().withGraphJoined('classes(filterActiveClass)').modifiers({
       filterActiveClass: (builder) => {
-        builder.select('id', 'name')
+        builder.select('*')
           .where('startDate', '<', today)
           .where('endDate', '>', today);
       },
