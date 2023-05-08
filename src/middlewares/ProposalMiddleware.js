@@ -64,7 +64,8 @@ class ProposalMiddleware {
         currentProposals[0].id,
       );
 
-      const wasProposalApproved = reviews.length > 0 && reviews.every((review) => review.wasApproved);
+      const wasProposalApproved = reviews.length > 0
+      && reviews.every((review) => review.wasApproved);
 
       if (wasProposalApproved) {
         return response
