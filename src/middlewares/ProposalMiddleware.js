@@ -51,7 +51,6 @@ class ProposalMiddleware {
           .json({ error: 'Periodo de submissão expirou' });
       }
     }
-    // console.log(currentProposals);
     if (currentProposals.length === 1) {
       const resubStartDate = new Date(
         activeClass.resubmissionStartDate,
@@ -64,11 +63,9 @@ class ProposalMiddleware {
         'reviews.proposalId',
         currentProposals[0].id,
       );
-      // console.log(reviews);
 
       const wasProposalApproved = reviews.length > 0 && reviews.every((review) => review.wasApproved);
 
-      // console.log(wasProposalApproved);
       if (wasProposalApproved) {
         return response
           .status(400)
