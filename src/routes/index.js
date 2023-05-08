@@ -13,6 +13,7 @@ router.use(userRouter);
 router.use(studentsRouter);
 router.use(professorsRouter);
 router.use(proposalsRouter);
+router.use(reviewsRouter);
 router.use(classesRouter);
 
 module.exports = router;
