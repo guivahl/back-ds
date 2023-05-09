@@ -12,6 +12,7 @@ class ProfessorController {
 
   async getProposalsToReview(request, response) {
     const { email } = request.auth;
+    const { id: turmaId } = request.params;
 
     const proposals = await Proposal.query().withGraphJoined('[student.user(filterUser), reviews.reviewer.user(filterUser)]')
       .modifiers({
@@ -20,8 +21,32 @@ class ProfessorController {
         },
       })
       .where('reviews.reviewerEmail', '=', email)
-      .select('proposals.id', 'proposals.title', 'proposals.createdAt');
+      .where('proposals.classId', turmaId)
+      .orderBy([
+        { column: 'reviews.wasApproved', order: 'desc' },
+        { column: 'proposals.createdAt', order: 'desc' }, 
+      ]);
+      
+    return response.json(proposals);
+  }
 
+  async getProposalsToCoordinate(request, response) {
+    const { email } = request.auth;
+    const { id: turmaId } = request.params;
+
+    const proposals = await Proposal.query()
+      .withGraphJoined("[class(filterClass), reviews.reviewer.user]", { joinOperation: 'innerJoin'})
+      .modifiers({
+        filterClass: (builder) => {
+          builder.where("classes.coordinatorEmail", email);
+        },
+      })
+      .where("proposals.classId", turmaId)
+      .orderBy([
+        { column: "reviews.wasApproved", order: "desc" },
+        { column: "proposals.createdAt", order: "desc" },
+      ]);
+      
     return response.json(proposals);
   }
 
