@@ -48,18 +48,6 @@ class Proposal extends Model {
           to: 'reviews.proposalId',
         },
       },
-      reviewers: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Professor,
-        join: {
-          from: 'proposals.id',
-          through: {
-            from: 'reviews.proposalId',
-            to: 'reviews.reviewerEmail',
-          },
-          to: 'professors.userEmail',
-        },
-      },
     };
   }
 }
