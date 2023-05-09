@@ -11,7 +11,14 @@ class CoodinatorController {
       reviewerEmail,
     }));
 
-    const review = await Review.query().insert(formattedReview);
+    const trx = await Review.startTransaction();
+
+    await Review.query(trx).delete()
+      .where({ proposalId: id });
+
+    const review = await Review.query(trx).insert(formattedReview);
+
+    await trx.commit();
 
     return response.json(review);
   }
