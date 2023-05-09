@@ -1,5 +1,7 @@
 const Student = require('../models/Student');
 const Proposal = require('../models/Proposal');
+const User = require('../models/User');
+const HashService = require('../services/HashService');
 
 const proposalStatus = (proposal) => {
   const today = new Date().toISOString();
@@ -79,6 +81,69 @@ class StudentsController {
       .findById(id);
 
     return response.json(proposals);
+  }
+
+  async create(request, response) {
+    const student = request.body;
+    const verifyStudent = await User
+      .query()
+      .findById(student.email);
+
+    if (verifyStudent) {
+      return response.status(400).json({ status: 'Usuário com este email já cadastrado.' });
+    }
+
+    const insertUser = await User
+      .query()
+      .insert({
+        email: student.email,
+        name: student.name,
+        password: HashService.generateHash(student.password),
+      });
+    const insertStudent = await Student
+      .query()
+      .insert({ userEmail: student.email, registrationNumber: student.registrationNumber });
+    if (!insertStudent) { return response.status(500).json({ status: 'Erro ao adicionar aluno.' }); }
+
+    return response.status(200).json({ status: 'Aluno adicionado com sucesso.' });
+  }
+
+  async update(request, response) {
+    const student = request.body;
+    const updateStudent = await User.query().upsertGraph({
+      email: student.email,
+      name: student.name,
+      student: {
+        registrationNumber: student.registrationNumber,
+      },
+    });
+
+    if (!updateStudent) {
+      return response.status(500).json({ status: 'Algo deu errado' });
+    }
+    return response.status(200).json({ status: 'Aluno modificado com sucesso.' });
+  }
+
+  async delete(request, response) {
+    const student = request.body;
+    const studentProposals = await Proposal.query()
+      .select('*')
+      .where('studentEmail', student.email);
+
+    if (studentProposals.length > 0) {
+      return response.status(400).json({ status: 'Aluno já possui proposta no sistema, não é possível deletar.' });
+    }
+    const deleteStudent = await Student.query()
+      .deleteById(student.email);
+    if (deleteStudent === 0) {
+      return response.status(500).json({ status: 'Erro ao deletar aluno.' });
+    }
+    const deleteUser = await User.query()
+      .deleteById(student.email);
+    if (deleteUser === 0) {
+      return response.status(500).json({ status: 'Erro ao deletar usuário.' });
+    }
+    return response.status(200).json({ status: 'Aluno deletado com sucesso.' });
   }
 }
 
