@@ -92,19 +92,20 @@ class StudentsController {
     if (verifyStudent) {
       return response.status(400).json({ status: 'Usuário com este email já cadastrado.' });
     }
+    const trx = await User.startTransaction();
 
-    const insertUser = await User
-      .query()
+    await User
+      .query(trx)
       .insert({
         email: student.email,
         name: student.name,
         password: HashService.generateHash(student.password),
       });
     const insertStudent = await Student
-      .query()
+      .query(trx)
       .insert({ userEmail: student.email, registrationNumber: student.registrationNumber });
     if (!insertStudent) { return response.status(500).json({ status: 'Erro ao adicionar aluno.' }); }
-
+    trx.commit();
     return response.status(200).json({ status: 'Aluno adicionado com sucesso.' });
   }
 
@@ -133,16 +134,14 @@ class StudentsController {
     if (studentProposals.length > 0) {
       return response.status(400).json({ status: 'Aluno já possui proposta no sistema, não é possível deletar.' });
     }
-    const deleteStudent = await Student.query()
-      .deleteById(student.email);
-    if (deleteStudent === 0) {
-      return response.status(500).json({ status: 'Erro ao deletar aluno.' });
-    }
+
     const deleteUser = await User.query()
       .deleteById(student.email);
+
     if (deleteUser === 0) {
       return response.status(500).json({ status: 'Erro ao deletar usuário.' });
     }
+
     return response.status(200).json({ status: 'Aluno deletado com sucesso.' });
   }
 }

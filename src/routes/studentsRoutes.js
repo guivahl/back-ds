@@ -7,8 +7,8 @@ const studentsRouter = Router();
 
 studentsRouter.get('/students', Authentication.checkIfUserIsStudent, StudentsController.proposals);
 studentsRouter.get('/students/proposals/:id/reviews', Authentication.checkIfUserIsStudent, StudentsController.getReviewsByProposal);
-studentsRouter.post('/crud', Authentication.checkIfUserIsAdmin, StudentsController.create);
-studentsRouter.put('/crud', Authentication.checkIfUserIsAdmin, StudentsController.update);
-studentsRouter.delete('/crud', Authentication.checkIfUserIsAdmin, StudentsController.delete);
+studentsRouter.post('/students', Authentication.checkIfUserIsAdmin, StudentsController.create);
+studentsRouter.put('/students', Authentication.checkIfUserIsAdmin, StudentsController.update);
+studentsRouter.delete('/students', Authentication.checkIfUserIsAdmin, StudentsController.delete);
 
 module.exports = studentsRouter;
