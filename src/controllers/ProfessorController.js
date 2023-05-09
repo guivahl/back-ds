@@ -64,6 +64,38 @@ class ProfessorController {
     return response.json(proposals);
   }
 
+  async getProposalsToAdvise(request, response) {
+    const { email } = request.auth;
+    const { id: turmaId } = request.params;
+
+    const proposalsData = await Proposal.query().withGraphJoined('[class, student.user(filterUser), reviews.reviewer.user(filterUser)]')
+      .modifiers({
+        filterUser: (builder) => {
+          builder.select('users.name');
+        },
+      }) 
+      .where('proposals.advisorEmail', '=', email)
+      .where('proposals.classId', turmaId)
+      .orderBy([
+        { column: 'reviews.wasApproved', order: 'desc' },
+        { column: 'proposals.createdAt', order: 'desc' },
+      ]);
+
+    const proposals = proposalsData.map((proposal) => {
+      const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
+      return {
+        id: proposal.id,
+        title: proposal.title,
+        author: proposal.student.user.name,
+        link: proposal.filePath,
+        createdAt: proposal.createdAt,
+        status,
+      };
+    });
+
+    return response.json(proposals);
+  }
+
   async getAllClasses(request, response) {
     const { email } = request.auth;
 
