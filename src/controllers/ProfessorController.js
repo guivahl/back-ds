@@ -29,19 +29,13 @@ class ProfessorController {
         { column: 'proposals.createdAt', order: 'desc' },
       ]);
 
-    const proposals = proposalsData.map((proposal) => {
+    proposalsData.forEach((proposal) => {
       const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
-      return {
-        id: proposal.id,
-        title: proposal.title,
-        author: proposal.student.user.name,
-        link: proposal.filePath,
-        createdAt: proposal.createdAt,
-        status,
-      };
+
+      proposal.status = status
     });
 
-    return response.json(proposals);
+    return response.json(proposalsData);
   }
 
   async getProposalsToCoordinate(request, response) {
@@ -81,19 +75,13 @@ class ProfessorController {
         { column: 'proposals.createdAt', order: 'desc' },
       ]);
 
-    const proposals = proposalsData.map((proposal) => {
+    proposalsData.forEach((proposal) => {
       const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
-      return {
-        id: proposal.id,
-        title: proposal.title,
-        author: proposal.student.user.name,
-        link: proposal.filePath,
-        createdAt: proposal.createdAt,
-        status,
-      };
+  
+      proposal.status = status
     });
-
-    return response.json(proposals);
+  
+      return response.json(proposalsData);
   }
 
   async getAllClasses(request, response) {
