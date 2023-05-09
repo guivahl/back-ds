@@ -42,9 +42,9 @@ class Authentication {
   static async checkIfUserIsAdmin(request, response, next) {
     const { email } = request.auth;
 
-    const isProfessor = await Admin.query().findById(email);
+    const isAdmin = await Admin.query().findById(email);
 
-    if (!isProfessor) {
+    if (!isAdmin) {
       return response.status(403).json({ message: 'Você não tem permissão para acessar' });
     }
 

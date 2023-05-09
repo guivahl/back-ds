@@ -114,7 +114,7 @@ class StudentsController {
 
   async update(request, response) {
     const student = request.body;
-    const updateStudent = await User.query().upsertGraph({
+    await User.query().upsertGraph({
       email: student.email,
       name: student.name,
       student: {
@@ -122,28 +122,20 @@ class StudentsController {
       },
     });
 
-    if (!updateStudent) {
-      return response.status(500).json({ status: 'Algo deu errado' });
-    }
     return response.status(200).json({ status: 'Aluno modificado com sucesso.' });
   }
 
   async delete(request, response) {
     const student = request.body;
     const studentProposals = await Proposal.query()
-      .select('*')
       .where('studentEmail', student.email);
 
     if (studentProposals.length > 0) {
       return response.status(400).json({ status: 'Aluno já possui proposta no sistema, não é possível deletar.' });
     }
 
-    const deleteUser = await User.query()
+    await User.query()
       .deleteById(student.email);
-
-    if (deleteUser === 0) {
-      return response.status(500).json({ status: 'Erro ao deletar usuário.' });
-    }
 
     return response.status(200).json({ status: 'Aluno deletado com sucesso.' });
   }
