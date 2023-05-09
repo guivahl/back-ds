@@ -89,6 +89,89 @@ class ProposalMiddleware {
     }
     next();
   }
+
+  async checkReviewEditPossibility(request, response, next) {
+    const { email: reviewerEmail } = request.auth;
+    const proposalId = request.params.id;
+
+    const today = new Date().toISOString();
+    const currentProposal = await Proposal.query()
+      .withGraphJoined('[class(filterActiveClass), reviews(filterReviews)]')
+      .modifiers({
+        filterActiveClass: (builder) => {
+          builder
+            .select(
+              'startDate',
+              'endDate',
+              'evaluationStartDate',
+              'evaluationEndDate',
+              'reevaluationStartDate',
+              'reevaluationEndDate',
+              'id',
+            )
+            .where('startDate', '<', today)
+            .where('endDate', '>', today);
+        },
+        filterReviews: (builder) => {
+          builder
+            .select(
+              'wasApproved',
+              'reviewerEmail',
+              'id',
+            )
+            .where('reviewerEmail', reviewerEmail);
+        },
+      })
+      .findById(proposalId)
+      .select('class', 'reviews');
+
+    const classStartDate = new Date(
+      currentProposal.class.evaluationStartDate,
+    ).toISOString();
+    const classEndDate = new Date(
+      currentProposal.class.evaluationEndDate,
+    ).toISOString();
+
+    if (!(today > classStartDate && today < classEndDate)) {
+      return response
+        .status(400)
+        .json({ error: 'A turma não está ativa.' });
+    }
+
+    const evalStartDate = new Date(
+      currentProposal.class.evaluationStartDate,
+    ).toISOString();
+    const evalEndDate = new Date(
+      currentProposal.class.evaluationEndDate,
+    ).toISOString();
+
+    const reevalStartDate = new Date(
+      currentProposal.class.reevaluationStartDate,
+    ).toISOString();
+    const reevalEndDate = new Date(
+      currentProposal.class.reevaluationEndDate,
+    ).toISOString();
+
+    if (!((today > evalStartDate && today < evalEndDate) || (today > reevalStartDate && today < reevalEndDate))) {
+      return response
+        .status(400)
+        .json({ error: 'Periodo de avaliação/reavaliação expirou' });
+    }
+
+    const thisProfessorReview = currentProposal.reviews?.[0];
+    if (!thisProfessorReview) {
+      return response
+        .status(400)
+        .json({ error: 'Você não é revisor(a) nesta proposta.' });
+    }
+
+    if (thisProfessorReview.wasApproved != null) {
+      return response
+        .status(400)
+        .json({ error: 'Você já revisou esta proposta' });
+    }
+    next();
+  }
 }
 
 module.exports = new ProposalMiddleware();
