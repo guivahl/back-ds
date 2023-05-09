@@ -91,7 +91,8 @@ class ProfessorController {
       .query()
       .innerJoin('professors', 'professors.userEmail', 'classes.coordinatorEmail')
       .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
-      .where('professors.userEmail', email);
+      .where('professors.userEmail', email)
+      .orderBy('classes.endDate', 'desc');
 
     const advisor = await Class
       .query()
@@ -99,6 +100,7 @@ class ProfessorController {
       .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
       .innerJoin('professors', 'professors.userEmail', 'proposals.advisorEmail')
       .where('professors.userEmail', email)
+      .orderBy('classes.endDate', 'desc')
       .groupBy('classes.id');
 
     const reviewer = await Class
@@ -108,6 +110,7 @@ class ProfessorController {
       .innerJoin('reviews', 'reviews.proposalId', 'proposals.id')
       .innerJoin('professors', 'professors.userEmail', 'reviews.reviewerEmail')
       .where('professors.userEmail', email)
+      .orderBy('classes.endDate', 'desc')
       .groupBy('classes.id');
 
     return response.json({
