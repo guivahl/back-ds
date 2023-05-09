@@ -4,6 +4,7 @@ const { SECRET_ENV } = require('../config');
 
 const Student = require('../models/Student');
 const Professor = require('../models/Professor');
+const Admin = require('../models/Admin');
 
 class Authentication {
   static initialize() {
@@ -32,6 +33,18 @@ class Authentication {
     const isProfessor = await Professor.query().findById(email);
 
     if (!isProfessor) {
+      return response.status(403).json({ message: 'Você não tem permissão para acessar' });
+    }
+
+    next();
+  }
+
+  static async checkIfUserIsAdmin(request, response, next) {
+    const { email } = request.auth;
+
+    const isAdmin = await Admin.query().findById(email);
+
+    if (!isAdmin) {
       return response.status(403).json({ message: 'Você não tem permissão para acessar' });
     }
 
