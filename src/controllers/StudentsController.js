@@ -104,8 +104,11 @@ class StudentsController {
     const insertStudent = await Student
       .query(trx)
       .insert({ userEmail: student.email, registrationNumber: student.registrationNumber });
+
     if (!insertStudent) { return response.status(500).json({ status: 'Erro ao adicionar aluno.' }); }
-    trx.commit();
+
+    await trx.commit();
+
     return response.status(200).json({ status: 'Aluno adicionado com sucesso.' });
   }
 
