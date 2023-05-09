@@ -1,4 +1,4 @@
-const Review = require("../models/Review");
+const Review = require('../models/Review');
 
 class ReviewController {
   async getOne(request, response) {
@@ -25,7 +25,7 @@ class ReviewController {
       workPlan,
       wasApproved,
     } = request.body;
-    
+
     const today = new Date().toISOString();
 
     /* to-do: checar se esta no periodo de revisão */
