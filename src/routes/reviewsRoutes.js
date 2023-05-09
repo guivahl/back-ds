@@ -10,6 +10,6 @@ const reviewsRouter = Router();
 reviewsRouter.get('/reviews/:id', Authentication.checkIfUserIsProfessor, ReviewsController.getOne);
 reviewsRouter.put('/reviews/:id', Authentication.checkIfUserIsProfessor, ReviewsController.update);
 
-reviewsRouter.post('/proposals/:id/reviews', ProposalMiddleware.checkLinkReviewerToProposal, ReviewsController.update);
+reviewsRouter.post('/proposals/:id/reviews', ProposalMiddleware.checkSubmitProposalPossibility, ReviewsController.update);
 
 module.exports = reviewsRouter;

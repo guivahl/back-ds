@@ -1,17 +1,17 @@
 const Proposal = require('../models/Proposal');
 
-class CoodinatorMiddleware {
-  async checkLinkReviewerToProposal(request, response, next) {
+class CoordinatorMiddleware {
+  static async checkLinkReviewerToProposal(request, response, next) {
     const { id } = request.params;
 
     const today = new Date().toISOString();
 
-    const activeClass = await Proposal.relatedQuery('class')
+    const selectedClass = await Proposal.relatedQuery('class')
       .for(id)
       .first();
 
     const evaluationStartDate = new Date(
-      activeClass.evaluationStartDate,
+      selectedClass.evaluationStartDate,
     ).toISOString();
 
     if (today > evaluationStartDate) {
@@ -24,4 +24,4 @@ class CoodinatorMiddleware {
   }
 }
 
-module.exports = CoodinatorMiddleware;
+module.exports = CoordinatorMiddleware;

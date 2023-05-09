@@ -4,11 +4,11 @@ class CoodinatorController {
   async linkProfessorsToProposal(request, response) {
     const { id } = request.params;
 
-    const { emails } = request.body;
+    const { reviewersEmails } = request.body;
 
-    const formattedReview = emails.map((item) => ({
-      reviewerEmail: item,
+    const formattedReview = reviewersEmails.map((reviewerEmail) => ({
       proposalId: id,
+      reviewerEmail,
     }));
 
     const review = await Review.query().insert(formattedReview);
