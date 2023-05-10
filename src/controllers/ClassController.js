@@ -28,7 +28,6 @@ class ClassController {
   async create(request, response) {
     const { email: professorEmail } = request.auth;
     const classInfo = request.body;
-    const dates = classInfo.dates.split(';');
     const students = classInfo.students.split(';');
     const trx = await Class.startTransaction();
 
@@ -36,16 +35,16 @@ class ClassController {
       .query(trx)
       .insert({
         name: classInfo.name,
-        startDate: dates[0],
-        endDate: dates[1],
-        submissionStartDate: dates[2],
-        submissionEndDate: dates[3],
-        evaluationStartDate: dates[4],
-        evaluationEndDate: dates[5],
-        resubmissionStartDate: dates[6],
-        resubmissionEndDate: dates[7],
-        reevaluationStartDate: dates[8],
-        reevaluationEndDate: dates[9],
+        startDate: classInfo.startDate,
+        endDate: classInfo.endDate,
+        submissionStartDate: classInfo.submissionStartDate,
+        submissionEndDate: classInfo.submissionEndDate,
+        evaluationStartDate: classInfo.evaluationStartDate,
+        evaluationEndDate: classInfo.evaluationEndDate,
+        resubmissionStartDate: classInfo.resubmissionStartDate,
+        resubmissionEndDate: classInfo.resubmissionEndDate,
+        reevaluationStartDate: classInfo.reevaluationStartDate,
+        reevaluationEndDate: classInfo.reevaluationEndDate,
         coordinatorEmail: professorEmail,
       })
       .returning('*');
@@ -61,21 +60,20 @@ class ClassController {
 
   async update(request, response) {
     const classInfo = request.body;
-    const dates = classInfo.dates.split(';');
 
     await Class.query().upsertGraph({
       id: classInfo.classId,
       name: classInfo.name,
-      startDate: dates[0],
-      endDate: dates[1],
-      submissionStartDate: dates[2],
-      submissionEndDate: dates[3],
-      evaluationStartDate: dates[4],
-      evaluationEndDate: dates[5],
-      resubmissionStartDate: dates[6],
-      resubmissionEndDate: dates[7],
-      reevaluationStartDate: dates[8],
-      reevaluationEndDate: dates[9],
+      startDate: classInfo.startDate,
+      endDate: classInfo.endDate,
+      submissionStartDate: classInfo.submissionStartDate,
+      submissionEndDate: classInfo.submissionEndDate,
+      evaluationStartDate: classInfo.evaluationStartDate,
+      evaluationEndDate: classInfo.evaluationEndDate,
+      resubmissionStartDate: classInfo.resubmissionStartDate,
+      resubmissionEndDate: classInfo.resubmissionEndDate,
+      reevaluationStartDate: classInfo.reevaluationStartDate,
+      reevaluationEndDate: classInfo.reevaluationEndDate,
     });
 
     return response.status(200).json({ status: 'Truma modificada com sucesso.' });
