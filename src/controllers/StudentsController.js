@@ -3,18 +3,7 @@ const Proposal = require('../models/Proposal');
 const User = require('../models/User');
 const HashService = require('../services/HashService');
 
-const proposalStatus = (proposal) => {
-  const today = new Date().toISOString();
-  const endDate = new Date(proposal.class.endDate).toISOString();
-
-  if (endDate < today) return 'Finalizado';
-  if (proposal.reviews.length <= 0) return 'Pendente';
-
-  if (proposal.reviews.some((element) => element.wasApproved === false)) return 'Reprovado';
-  if (proposal.reviews.every((element) => element.wasApproved === true)) return 'Aprovado';
-
-  return 'Pendente';
-};
+const ProposalService = require('../services/ProposalService');
 
 class StudentsController {
   async proposals(request, response) {
@@ -50,7 +39,7 @@ class StudentsController {
       })
       .where('students.userEmail', email);
     const proposals = studentData.proposals.map((proposal) => {
-      const status = proposal.reviews.length <= 0 ? 'Pendente' : proposalStatus(proposal);
+      const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
       return {
         id: proposal.id,
         title: proposal.title,

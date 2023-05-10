@@ -5,6 +5,8 @@ const Professor = require('../models/Professor');
 const Review = require('../models/Review');
 const HashService = require('../services/HashService');
 
+const ProposalService = require('../services/ProposalService');
+
 class ProfessorController {
   async index(request, response) {
     const professors = await User.query().innerJoin('professors', 'professors.userEmail', 'users.email')
@@ -17,7 +19,7 @@ class ProfessorController {
     const { email } = request.auth;
     const { id: turmaId } = request.params;
 
-    const proposals = await Proposal.query().withGraphJoined('[student.user(filterUser), reviews.reviewer.user(filterUser)]')
+    const proposalsData = await Proposal.query().withGraphJoined('[class, student.user(filterUser), reviews.reviewer.user(filterUser)]')
       .modifiers({
         filterUser: (builder) => {
           builder.select('users.name');
@@ -30,7 +32,13 @@ class ProfessorController {
         { column: 'proposals.createdAt', order: 'desc' },
       ]);
 
-    return response.json(proposals);
+    proposalsData.forEach((proposal) => {
+      const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
+
+      proposal.status = status;
+    });
+
+    return response.json(proposalsData);
   }
 
   async getProposalsToCoordinate(request, response) {
@@ -53,30 +61,80 @@ class ProfessorController {
     return response.json(proposals);
   }
 
+  async getProposalsToAdvise(request, response) {
+    const { email } = request.auth;
+    const { id: turmaId } = request.params;
+
+    const proposalsData = await Proposal.query().withGraphJoined('[class, student.user(filterUser), reviews.reviewer.user(filterUser)]')
+      .modifiers({
+        filterUser: (builder) => {
+          builder.select('users.name');
+        },
+      })
+      .where('proposals.advisorEmail', '=', email)
+      .where('proposals.classId', turmaId)
+      .orderBy([
+        { column: 'reviews.wasApproved', order: 'desc' },
+        { column: 'proposals.createdAt', order: 'desc' },
+      ]);
+
+    proposalsData.forEach((proposal) => {
+      const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
+
+      proposal.status = status;
+    });
+
+    return response.json(proposalsData);
+  }
+
   async getAllClasses(request, response) {
     const { email } = request.auth;
 
     const coordinator = await Class
       .query()
       .innerJoin('professors', 'professors.userEmail', 'classes.coordinatorEmail')
-      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
-      .where('professors.userEmail', email);
+      .select(
+        'classes.id',
+        'classes.name',
+        'classes.startDate',
+        'classes.endDate',
+        'classes.evaluationStartDate',
+        'classes.evaluationEndDate',
+      )
+      .where('professors.userEmail', email)
+      .orderBy('classes.endDate', 'desc');
 
     const advisor = await Class
       .query()
       .innerJoin('proposals', 'proposals.classId', 'classes.id')
-      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .select(
+        'classes.id',
+        'classes.name',
+        'classes.startDate',
+        'classes.endDate',
+        'classes.evaluationStartDate',
+        'classes.evaluationEndDate',
+      )
       .innerJoin('professors', 'professors.userEmail', 'proposals.advisorEmail')
       .where('professors.userEmail', email)
+      .orderBy('classes.endDate', 'desc')
       .groupBy('classes.id');
 
     const reviewer = await Class
       .query()
       .innerJoin('proposals', 'proposals.classId', 'classes.id')
-      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .select(
+        'classes.id',
+        'classes.name',
+        'classes.startDate',
+        'classes.endDate',
+        'classes.evaluationStartDate',
+        'classes.evaluationEndDate',
+      )
       .innerJoin('reviews', 'reviews.proposalId', 'proposals.id')
       .innerJoin('professors', 'professors.userEmail', 'reviews.reviewerEmail')
       .where('professors.userEmail', email)
+      .orderBy('classes.endDate', 'desc')
       .groupBy('classes.id');
 
     return response.json({
