@@ -32,7 +32,7 @@ class ProfessorController {
     proposalsData.forEach((proposal) => {
       const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
 
-      proposal.status = status
+      proposal.status = status;
     });
 
     return response.json(proposalsData);
@@ -67,7 +67,7 @@ class ProfessorController {
         filterUser: (builder) => {
           builder.select('users.name');
         },
-      }) 
+      })
       .where('proposals.advisorEmail', '=', email)
       .where('proposals.classId', turmaId)
       .orderBy([
@@ -77,11 +77,11 @@ class ProfessorController {
 
     proposalsData.forEach((proposal) => {
       const status = proposal.reviews.length <= 0 ? 'Pendente' : ProposalService.proposalStatus(proposal);
-  
-      proposal.status = status
+
+      proposal.status = status;
     });
-  
-      return response.json(proposalsData);
+
+    return response.json(proposalsData);
   }
 
   async getAllClasses(request, response) {
@@ -90,14 +90,28 @@ class ProfessorController {
     const coordinator = await Class
       .query()
       .innerJoin('professors', 'professors.userEmail', 'classes.coordinatorEmail')
-      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .select(
+        'classes.id',
+        'classes.name',
+        'classes.startDate',
+        'classes.endDate',
+        'classes.evaluationStartDate',
+        'classes.evaluationEndDate',
+      )
       .where('professors.userEmail', email)
       .orderBy('classes.endDate', 'desc');
 
     const advisor = await Class
       .query()
       .innerJoin('proposals', 'proposals.classId', 'classes.id')
-      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .select(
+        'classes.id',
+        'classes.name',
+        'classes.startDate',
+        'classes.endDate',
+        'classes.evaluationStartDate',
+        'classes.evaluationEndDate',
+      )
       .innerJoin('professors', 'professors.userEmail', 'proposals.advisorEmail')
       .where('professors.userEmail', email)
       .orderBy('classes.endDate', 'desc')
@@ -106,7 +120,14 @@ class ProfessorController {
     const reviewer = await Class
       .query()
       .innerJoin('proposals', 'proposals.classId', 'classes.id')
-      .select('classes.id', 'classes.name', 'classes.startDate', 'classes.endDate')
+      .select(
+        'classes.id',
+        'classes.name',
+        'classes.startDate',
+        'classes.endDate',
+        'classes.evaluationStartDate',
+        'classes.evaluationEndDate',
+      )
       .innerJoin('reviews', 'reviews.proposalId', 'proposals.id')
       .innerJoin('professors', 'professors.userEmail', 'reviews.reviewerEmail')
       .where('professors.userEmail', email)
