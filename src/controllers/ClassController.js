@@ -63,7 +63,6 @@ class ClassController {
 
     await Class.query().upsertGraph({
       id: classInfo.classId,
-      name: classInfo.name,
       startDate: classInfo.startDate,
       endDate: classInfo.endDate,
       submissionStartDate: classInfo.submissionStartDate,
