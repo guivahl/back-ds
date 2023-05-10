@@ -28,7 +28,7 @@ class ClassController {
   async create(request, response) {
     const { email: professorEmail } = request.auth;
     const classInfo = request.body;
-    const students = classInfo.students.split(';');
+    const students = classInfo.students.split(';').filter((e) => e !== '');
     const trx = await Class.startTransaction();
 
     const { id: classId } = await Class
