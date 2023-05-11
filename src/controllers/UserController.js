@@ -13,7 +13,7 @@ class UserController {
   async login(request, response) {
     const { email, password } = request.body;
 
-    const user = await User.query().withGraphJoined('[student, professor]').where('email', '=', email).first();
+    const user = await User.query().withGraphJoined('[student, professor, admin]').where('email', '=', email).first();
 
     if (!user) {
       return response

@@ -5,6 +5,7 @@ const Authentication = require('../middlewares/Authentication');
 
 const studentsRouter = Router();
 
+studentsRouter.get('/students/all', StudentsController.index);
 studentsRouter.get('/students', Authentication.checkIfUserIsStudent, StudentsController.proposals);
 studentsRouter.get('/students/proposals/:id/reviews', StudentsController.getReviewsByProposal);
 studentsRouter.post('/students', Authentication.checkIfUserIsAdmin, StudentsController.create);

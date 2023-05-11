@@ -6,6 +6,13 @@ const HashService = require('../services/HashService');
 const ProposalService = require('../services/ProposalService');
 
 class StudentsController {
+  async index(request, response) {
+    const professors = await User.query().innerJoin('students', 'students.userEmail', 'users.email')
+      .select('users.*', 'students.registrationNumber')
+      .orderBy('name');
+    return response.json(professors);
+  }
+
   async proposals(request, response) {
     const { email } = request.auth;
 
