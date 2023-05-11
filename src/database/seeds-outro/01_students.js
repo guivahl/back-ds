@@ -6,7 +6,11 @@ exports.seed = async (knex) => {
     { userEmail: 'argalvao@inf.ufpel.edu.br', registrationNumber: '19100359' },
     { userEmail: 'mamota@inf.ufpel.edu.br', registrationNumber: '19101316' },
     { userEmail: 'ldsguths@inf.ufpel.edu.br', registrationNumber: '19100392' },
-    { userEmail: 'bdsvolcan@inf.ufpel.edu.br', registrationNumber: '19100280' },
+    { userEmail: 'aaa@inf.ufpel.edu.br', registrationNumber: '99999999' },
+    { userEmail: 'testeenviosubmissao1@inf.ufpel.edu.br', registrationNumber: '01010101' },
+    { userEmail: 'testeenviosubmissao2@inf.ufpel.edu.br', registrationNumber: '01010102' },
+    { userEmail: 'testeenviosubmissao3@inf.ufpel.edu.br', registrationNumber: '01010103' },
+
   ];
 
   await knex('students').del();

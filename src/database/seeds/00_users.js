@@ -18,11 +18,6 @@ exports.seed = async (knex) => {
     { name: 'Guilherme Ribeiro Corrêa', email: 'gcorrea@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Renata Hax Sander Reiser', email: 'reiser@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
     { name: 'Ulisses Brisolara Corrêa', email: 'ulisses@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
-    { name: 'User sem propostas', email: 'aaa@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
-    { name: 'User com proposta, sem reviews e no periodo de submissao', email: 'testeenviosubmissao1@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
-    { name: 'User com proposta, sem reviews e fora do periodo de submissao', email: 'testeenviosubmissao2@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
-    { name: 'User com proposta, com reviews, uma aprovada e uma null, e dentro do periodo de ressubmissao', email: 'testeenviosubmissao3@inf.ufpel.edu.br', password: HashService.generateHash('senha123') },
-
   ];
 
   await knex('users').del();
